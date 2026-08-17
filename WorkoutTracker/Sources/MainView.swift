@@ -5,7 +5,11 @@ struct MainView: View {
         TabView {
             TrainingPlanView()
                 .tabItem {
-                    Label("Plan", systemImage: "calendar")
+                    Label("Plan", systemImage: "dumbbell")
+                }
+            CalendarView()
+                .tabItem {
+                    Label("Calendar", systemImage: "calendar")
                 }
             ContentView()
                 .tabItem {
@@ -18,4 +22,5 @@ struct MainView: View {
 #Preview {
     MainView()
         .environmentObject(WorkoutStore())
+        .environmentObject(CompletionStore())
 }

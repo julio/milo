@@ -1,10 +1,10 @@
 import SwiftUI
 
 struct TrainingPlanView: View {
+    @EnvironmentObject var completionStore: CompletionStore
     @State private var index = TrainingPlan.defaultIndex(for: Date())
 
     private var days: [PlanDay] { TrainingPlan.days }
-    private var day: PlanDay { days[index] }
 
     var body: some View {
         NavigationStack {
@@ -19,6 +19,9 @@ struct TrainingPlanView: View {
             .navigationBarTitleDisplayMode(.inline)
             .safeAreaInset(edge: .bottom) {
                 navigationBar
+            }
+            .task {
+                await completionStore.refresh()
             }
         }
     }
@@ -63,21 +66,42 @@ struct TrainingPlanView: View {
 
 struct PlanDayView: View {
     let day: PlanDay
+    @EnvironmentObject var completionStore: CompletionStore
     private let maxes = TrainingMaxes.standard
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
                 header
+                if let message = completionStore.errorMessage {
+                    Text(message)
+                        .font(.caption)
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding(8)
+                        .background(Color.red)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                }
                 VStack(spacing: 10) {
-                    ForEach(Array(day.entries.enumerated()), id: \.offset) { _, entry in
-                        PlanEntryRow(entry: entry, maxes: maxes)
+                    ForEach(Array(day.entries.enumerated()), id: \.offset) { index, entry in
+                        PlanEntryRow(
+                            entry: entry,
+                            maxes: maxes,
+                            isDone: completionStore.isDone(dayId: day.id, entryIndex: index)
+                        ) {
+                            Task {
+                                await completionStore.toggle(dayId: day.id, entryIndex: index)
+                            }
+                        }
                     }
                 }
             }
             .padding()
         }
     }
+
+    private var doneCount: Int { completionStore.doneCount(for: day) }
+    private var totalCount: Int { CompletionStore.trackableIndices(for: day).count }
 
     private var header: some View {
         VStack(alignment: .leading, spacing: 6) {
@@ -97,9 +121,17 @@ struct PlanDayView: View {
             Text(day.label)
                 .font(.subheadline.weight(.bold))
                 .foregroundStyle(.tint)
-            Text("Week \(day.week) · Cycle \(day.cycle), week \(day.weekOfCycle) of 4")
-                .font(.caption)
-                .foregroundStyle(.secondary)
+            HStack {
+                Text("Week \(day.week) · Cycle \(day.cycle), week \(day.weekOfCycle) of 4")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                Spacer()
+                Text("\(doneCount)/\(totalCount) done")
+                    .font(.caption.weight(.bold))
+                    .foregroundStyle(doneCount == totalCount ? .green : .secondary)
+            }
+            ProgressView(value: Double(doneCount), total: Double(totalCount))
+                .tint(doneCount == totalCount ? .green : .accentColor)
         }
     }
 }
@@ -107,34 +139,51 @@ struct PlanDayView: View {
 struct PlanEntryRow: View {
     let entry: PlanEntry
     let maxes: TrainingMaxes
+    let isDone: Bool
+    let onToggle: () -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            HStack(alignment: .firstTextBaseline) {
-                Text(entry.exercise)
-                    .font(.subheadline.weight(entry.exercise == "same lift" ? .regular : .semibold))
-                    .foregroundStyle(entry.isSkipped ? .secondary : .primary)
-                Spacer()
-                Text(entry.setsReps)
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                Text(maxes.display(for: entry.weight))
-                    .font(.subheadline.weight(.bold))
-                    .frame(minWidth: 60, alignment: .trailing)
+        HStack(spacing: 12) {
+            if !entry.isSkipped {
+                Image(systemName: isDone ? "checkmark.circle.fill" : "circle")
+                    .font(.system(size: 24))
+                    .foregroundStyle(isDone ? .green : .secondary)
             }
-            if !entry.note.isEmpty {
-                Text(entry.note)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+            VStack(alignment: .leading, spacing: 4) {
+                HStack(alignment: .firstTextBaseline) {
+                    Text(entry.exercise)
+                        .font(.subheadline.weight(entry.exercise == "same lift" ? .regular : .semibold))
+                        .foregroundStyle(entry.isSkipped ? .secondary : .primary)
+                        .strikethrough(isDone && !entry.isSkipped)
+                    Spacer()
+                    Text(entry.setsReps)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                    Text(maxes.display(for: entry.weight))
+                        .font(.subheadline.weight(.bold))
+                        .frame(minWidth: 60, alignment: .trailing)
+                }
+                if !entry.note.isEmpty {
+                    Text(entry.note)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
             }
         }
         .padding(12)
-        .background(Color(.systemGray6))
+        .background(isDone && !entry.isSkipped ? Color.green.opacity(0.12) : Color(.systemGray6))
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .opacity(entry.isSkipped ? 0.6 : 1)
+        .contentShape(Rectangle())
+        .onTapGesture {
+            if !entry.isSkipped {
+                onToggle()
+            }
+        }
     }
 }
 
 #Preview {
     TrainingPlanView()
+        .environmentObject(CompletionStore())
 }

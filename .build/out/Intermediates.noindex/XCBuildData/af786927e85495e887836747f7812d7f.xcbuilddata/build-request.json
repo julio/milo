@@ -35,7 +35,7 @@
             "table" : {
               "ADD_TOOLCHAIN_CONCURRENCY_BACK_DEPLOY_RPATH" : "YES",
               "ADD_TOOLCHAIN_SPAN_BACK_DEPLOY_RPATH" : "YES",
-              "CLANG_COVERAGE_MAPPING" : "NO",
+              "CLANG_COVERAGE_MAPPING" : "YES",
               "COLOR_DIAGNOSTICS" : "YES",
               "DEAD_CODE_STRIPPING" : "YES",
               "DEPLOYMENT_POSTPROCESSING" : "NO",
@@ -94,7 +94,7 @@
         "table" : {
           "ADD_TOOLCHAIN_CONCURRENCY_BACK_DEPLOY_RPATH" : "YES",
           "ADD_TOOLCHAIN_SPAN_BACK_DEPLOY_RPATH" : "YES",
-          "CLANG_COVERAGE_MAPPING" : "NO",
+          "CLANG_COVERAGE_MAPPING" : "YES",
           "COLOR_DIAGNOSTICS" : "YES",
           "DEAD_CODE_STRIPPING" : "YES",
           "DEPLOYMENT_POSTPROCESSING" : "NO",

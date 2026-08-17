@@ -6,6 +6,7 @@ struct WorkoutTrackerApp: App {
         WindowGroup {
             MainView()
                 .environmentObject(WorkoutStore())
+                .environmentObject(CompletionStore())
         }
     }
 }

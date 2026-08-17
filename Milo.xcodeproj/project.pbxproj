@@ -22,6 +22,20 @@
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
+		<key>BuildFile_CalendarView</key>
+		<dict>
+			<key>fileRef</key>
+			<string>File_CalendarView</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>BuildFile_Completions</key>
+		<dict>
+			<key>fileRef</key>
+			<string>File_Completions</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
 		<key>BuildFile_Content</key>
 		<dict>
 			<key>fileRef</key>
@@ -99,6 +113,28 @@
 			<string>WorkoutTracker/Assets.xcassets</string>
 			<key>sourceTree</key>
 			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>File_CalendarView</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.swift</string>
+			<key>path</key>
+			<string>CalendarView.swift</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>File_Completions</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.swift</string>
+			<key>path</key>
+			<string>Completions.swift</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
 		</dict>
 		<key>File_Content</key>
 		<dict>
@@ -249,6 +285,8 @@
 				<string>BuildFile_PlanView</string>
 				<string>BuildFile_MainView</string>
 				<string>BuildFile_Supabase</string>
+				<string>BuildFile_Completions</string>
+				<string>BuildFile_CalendarView</string>
 			</array>
 			<key>isa</key>
 			<string>PBXSourcesBuildPhase</string>
@@ -323,6 +361,8 @@
 				<string>File_PlanView</string>
 				<string>File_MainView</string>
 				<string>File_Supabase</string>
+				<string>File_Completions</string>
+				<string>File_CalendarView</string>
 			</array>
 			<key>isa</key>
 			<string>PBXGroup</string>

@@ -5,11 +5,11 @@
       "name" : "MiloCore",
       "path" : "/Users/julio/code/personal/milo",
       "projects" : [
-        "cbe685bdf8d258f00c07e2c36eb12adfe7cbcd3d416f9687d8d07e8d1918c6e7",
+        "e16362ab27d47467035b58fb0b8bbcd50d8858071e25e22b740b5b7ad3927aa4",
         "ae1fa95baf01524afe22cc263e4d14226a2ca21b22bfbdbb938d550709d6b4e5"
       ]
     },
-    "signature" : "c7b3e6731140e1d229f3b4b66b81b003d9f405951c7159eb53a95bfaab006483",
+    "signature" : "1864893ec69e362e027142bf4319a667df6d1129a43ea76b693458925a96040f",
     "type" : "workspace"
   },
   {
@@ -207,6 +207,14 @@
               {
                 "fileType" : "sourcecode.swift",
                 "guid" : "PACKAGE:milo::MAINGROUP::REF_2::REF_0",
+                "name" : "CompletionsTests.swift",
+                "path" : "CompletionsTests.swift",
+                "sourceTree" : "<group>",
+                "type" : "file"
+              },
+              {
+                "fileType" : "sourcecode.swift",
+                "guid" : "PACKAGE:milo::MAINGROUP::REF_2::REF_1",
                 "name" : "ModelsTests.swift",
                 "path" : "ModelsTests.swift",
                 "sourceTree" : "<group>",
@@ -214,7 +222,7 @@
               },
               {
                 "fileType" : "sourcecode.swift",
-                "guid" : "PACKAGE:milo::MAINGROUP::REF_2::REF_1",
+                "guid" : "PACKAGE:milo::MAINGROUP::REF_2::REF_2",
                 "name" : "SupabaseBackendTests.swift",
                 "path" : "SupabaseBackendTests.swift",
                 "sourceTree" : "<group>",
@@ -222,7 +230,7 @@
               },
               {
                 "fileType" : "sourcecode.swift",
-                "guid" : "PACKAGE:milo::MAINGROUP::REF_2::REF_2",
+                "guid" : "PACKAGE:milo::MAINGROUP::REF_2::REF_3",
                 "name" : "TrainingPlanTests.swift",
                 "path" : "TrainingPlanTests.swift",
                 "sourceTree" : "<group>",
@@ -230,7 +238,7 @@
               },
               {
                 "fileType" : "sourcecode.swift",
-                "guid" : "PACKAGE:milo::MAINGROUP::REF_2::REF_3",
+                "guid" : "PACKAGE:milo::MAINGROUP::REF_2::REF_4",
                 "name" : "WorkoutStoreTests.swift",
                 "path" : "WorkoutStoreTests.swift",
                 "sourceTree" : "<group>",
@@ -248,6 +256,14 @@
               {
                 "fileType" : "sourcecode.swift",
                 "guid" : "PACKAGE:milo::MAINGROUP::REF_3::REF_0",
+                "name" : "Completions.swift",
+                "path" : "Completions.swift",
+                "sourceTree" : "<group>",
+                "type" : "file"
+              },
+              {
+                "fileType" : "sourcecode.swift",
+                "guid" : "PACKAGE:milo::MAINGROUP::REF_3::REF_1",
                 "name" : "Models.swift",
                 "path" : "Models.swift",
                 "sourceTree" : "<group>",
@@ -255,7 +271,7 @@
               },
               {
                 "fileType" : "sourcecode.swift",
-                "guid" : "PACKAGE:milo::MAINGROUP::REF_3::REF_1",
+                "guid" : "PACKAGE:milo::MAINGROUP::REF_3::REF_2",
                 "name" : "SupabaseBackend.swift",
                 "path" : "SupabaseBackend.swift",
                 "sourceTree" : "<group>",
@@ -263,7 +279,7 @@
               },
               {
                 "fileType" : "sourcecode.swift",
-                "guid" : "PACKAGE:milo::MAINGROUP::REF_3::REF_2",
+                "guid" : "PACKAGE:milo::MAINGROUP::REF_3::REF_3",
                 "name" : "TrainingPlan.swift",
                 "path" : "TrainingPlan.swift",
                 "sourceTree" : "<group>",
@@ -271,7 +287,7 @@
               },
               {
                 "fileType" : "sourcecode.swift",
-                "guid" : "PACKAGE:milo::MAINGROUP::REF_3::REF_3",
+                "guid" : "PACKAGE:milo::MAINGROUP::REF_3::REF_4",
                 "name" : "TrainingPlanData.swift",
                 "path" : "TrainingPlanData.swift",
                 "sourceTree" : "<group>",
@@ -279,7 +295,7 @@
               },
               {
                 "fileType" : "sourcecode.swift",
-                "guid" : "PACKAGE:milo::MAINGROUP::REF_3::REF_4",
+                "guid" : "PACKAGE:milo::MAINGROUP::REF_3::REF_5",
                 "name" : "WorkoutStore.swift",
                 "path" : "WorkoutStore.swift",
                 "sourceTree" : "<group>",
@@ -297,6 +313,14 @@
               {
                 "fileType" : "sourcecode.swift",
                 "guid" : "PACKAGE:milo::MAINGROUP::REF_4::REF_0",
+                "name" : "Completions.swift",
+                "path" : "Completions.swift",
+                "sourceTree" : "<group>",
+                "type" : "file"
+              },
+              {
+                "fileType" : "sourcecode.swift",
+                "guid" : "PACKAGE:milo::MAINGROUP::REF_4::REF_1",
                 "name" : "Models.swift",
                 "path" : "Models.swift",
                 "sourceTree" : "<group>",
@@ -304,7 +328,7 @@
               },
               {
                 "fileType" : "sourcecode.swift",
-                "guid" : "PACKAGE:milo::MAINGROUP::REF_4::REF_1",
+                "guid" : "PACKAGE:milo::MAINGROUP::REF_4::REF_2",
                 "name" : "SupabaseBackend.swift",
                 "path" : "SupabaseBackend.swift",
                 "sourceTree" : "<group>",
@@ -312,7 +336,7 @@
               },
               {
                 "fileType" : "sourcecode.swift",
-                "guid" : "PACKAGE:milo::MAINGROUP::REF_4::REF_2",
+                "guid" : "PACKAGE:milo::MAINGROUP::REF_4::REF_3",
                 "name" : "TrainingPlan.swift",
                 "path" : "TrainingPlan.swift",
                 "sourceTree" : "<group>",
@@ -320,7 +344,7 @@
               },
               {
                 "fileType" : "sourcecode.swift",
-                "guid" : "PACKAGE:milo::MAINGROUP::REF_4::REF_3",
+                "guid" : "PACKAGE:milo::MAINGROUP::REF_4::REF_4",
                 "name" : "TrainingPlanData.swift",
                 "path" : "TrainingPlanData.swift",
                 "sourceTree" : "<group>",
@@ -328,7 +352,7 @@
               },
               {
                 "fileType" : "sourcecode.swift",
-                "guid" : "PACKAGE:milo::MAINGROUP::REF_4::REF_4",
+                "guid" : "PACKAGE:milo::MAINGROUP::REF_4::REF_5",
                 "name" : "WorkoutStore.swift",
                 "path" : "WorkoutStore.swift",
                 "sourceTree" : "<group>",
@@ -354,14 +378,14 @@
       "projectIsPackage" : "true",
       "projectName" : "MiloCore",
       "targets" : [
-        "0bee3a10480e802401c149e0268fd6476d84024aab2919f1a22cbb4b9dc332bc",
+        "e34c33ac6c54a777a30d4380d1f2edeb40aec6d3cf78a8e5754fb3f72b20c341",
         "d2fde6ab46674ef90ce35674a7e982da1e66d4aad584e625473c977432335438",
-        "669920d9251bdac4ba0beeb71641d2425442df6d6aa428bb6d9057ddf43c48ad",
-        "dc262571eb8e422248b6c5e6c6658a436a26184b31094e52ca552f4366faa03a",
+        "95099632492392e6f8ced838132994ce5b57a3b25ccc75561ea9d213280c88df",
+        "2035d93fdbc0ec8e3dd1945d5f21c6ffe5029edd795a34f37b0905e457158700",
         "1e8a48aca30b716f39551320089822d266758b896d04e26ead9d4cf57eeb4527"
       ]
     },
-    "signature" : "cbe685bdf8d258f00c07e2c36eb12adfe7cbcd3d416f9687d8d07e8d1918c6e7",
+    "signature" : "e16362ab27d47467035b58fb0b8bbcd50d8858071e25e22b740b5b7ad3927aa4",
     "type" : "project"
   },
   {
@@ -505,6 +529,15 @@
 
               ],
               "removeHeadersOnCopy" : "false"
+            },
+            {
+              "codeSignOnCopy" : "false",
+              "fileReference" : "PACKAGE:milo::MAINGROUP::REF_2::REF_4",
+              "guid" : "PACKAGE-PRODUCT:milo_WorkoutTrackerTests.WorkoutTrackerTests::BUILDPHASE_0::4",
+              "platformFilters" : [
+
+              ],
+              "removeHeadersOnCopy" : "false"
             }
           ],
           "guid" : "PACKAGE-PRODUCT:milo_WorkoutTrackerTests.WorkoutTrackerTests::BUILDPHASE_0",
@@ -548,7 +581,7 @@
       "productTypeIdentifier" : "com.apple.product-type.bundle.unit-test",
       "type" : "standard"
     },
-    "signature" : "0bee3a10480e802401c149e0268fd6476d84024aab2919f1a22cbb4b9dc332bc",
+    "signature" : "e34c33ac6c54a777a30d4380d1f2edeb40aec6d3cf78a8e5754fb3f72b20c341",
     "type" : "target"
   },
   {
@@ -822,6 +855,15 @@
 
               ],
               "removeHeadersOnCopy" : "false"
+            },
+            {
+              "codeSignOnCopy" : "false",
+              "fileReference" : "PACKAGE:milo::MAINGROUP::REF_3::REF_5",
+              "guid" : "PACKAGE-TARGET:WorkoutTracker::BUILDPHASE_0::5",
+              "platformFilters" : [
+
+              ],
+              "removeHeadersOnCopy" : "false"
             }
           ],
           "guid" : "PACKAGE-TARGET:WorkoutTracker::BUILDPHASE_0",
@@ -848,7 +890,7 @@
       "productTypeIdentifier" : "org.swift.product-type.library.static",
       "type" : "standard"
     },
-    "signature" : "669920d9251bdac4ba0beeb71641d2425442df6d6aa428bb6d9057ddf43c48ad",
+    "signature" : "95099632492392e6f8ced838132994ce5b57a3b25ccc75561ea9d213280c88df",
     "type" : "target"
   },
   {
@@ -1060,6 +1102,15 @@
 
               ],
               "removeHeadersOnCopy" : "false"
+            },
+            {
+              "codeSignOnCopy" : "false",
+              "fileReference" : "PACKAGE:milo::MAINGROUP::REF_4::REF_5",
+              "guid" : "PACKAGE-TARGET:WorkoutTracker--F8500EAA5D76E2B-dynamic::BUILDPHASE_0::5",
+              "platformFilters" : [
+
+              ],
+              "removeHeadersOnCopy" : "false"
             }
           ],
           "guid" : "PACKAGE-TARGET:WorkoutTracker--F8500EAA5D76E2B-dynamic::BUILDPHASE_0",
@@ -1085,7 +1136,7 @@
       "productTypeIdentifier" : "com.apple.product-type.library.dynamic",
       "type" : "standard"
     },
-    "signature" : "dc262571eb8e422248b6c5e6c6658a436a26184b31094e52ca552f4366faa03a",
+    "signature" : "2035d93fdbc0ec8e3dd1945d5f21c6ffe5029edd795a34f37b0905e457158700",
     "type" : "target"
   },
   {

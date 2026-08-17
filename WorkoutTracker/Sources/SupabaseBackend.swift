@@ -147,3 +147,25 @@ struct SupabaseBackend: WorkoutBackend {
             path: "workouts", query: "id=not.is.null", method: "DELETE"))
     }
 }
+
+extension SupabaseBackend: CompletionBackend {
+    func fetchCompletions() async throws -> [SetCompletion] {
+        let data = try await send(request(
+            path: "set_completions", query: "select=day_id,entry_index",
+            method: "GET"))
+        return try JSONDecoder().decode([SetCompletion].self, from: data)
+    }
+
+    func insert(_ completion: SetCompletion) async throws {
+        try await send(request(
+            path: "set_completions", method: "POST",
+            body: try JSONEncoder().encode(completion)))
+    }
+
+    func delete(_ completion: SetCompletion) async throws {
+        try await send(request(
+            path: "set_completions",
+            query: "day_id=eq.\(completion.dayId)&entry_index=eq.\(completion.entryIndex)",
+            method: "DELETE"))
+    }
+}
