@@ -5,6 +5,7 @@ import SwiftUI
 struct TodayView: View {
     @EnvironmentObject var completionStore: CompletionStore
     @EnvironmentObject var stretchStore: StretchStore
+    @EnvironmentObject var renameStore: RenameStore
     @State private var selectedDate = Date()
 
     private let maxes = TrainingMaxes.standard
@@ -34,13 +35,19 @@ struct TodayView: View {
                             ForEach(Array(day.entries.enumerated()), id: \.offset) { index, entry in
                                 PlanEntryRow(
                                     entry: entry,
+                                    displayName: renameStore.displayName(for: entry.exercise),
                                     maxes: maxes,
-                                    isDone: completionStore.isDone(dayId: day.id, entryIndex: index)
-                                ) {
-                                    Task {
-                                        await completionStore.toggle(dayId: day.id, entryIndex: index)
-                                    }
-                                }
+                                    isDone: completionStore.isDone(dayId: day.id, entryIndex: index),
+                                    onToggle: {
+                                        Task {
+                                            await completionStore.toggle(dayId: day.id, entryIndex: index)
+                                        }
+                                    },
+                                    onRename: { newName in
+                                        Task {
+                                            await renameStore.rename(original: entry.exercise, to: newName)
+                                        }
+                                    })
                             }
                         }
                     }
@@ -50,13 +57,19 @@ struct TodayView: View {
                         VStack(spacing: 10) {
                             ForEach(StretchPlan.stretches.indices, id: \.self) { index in
                                 StretchRow(
-                                    name: StretchPlan.stretches[index],
-                                    isDone: stretchStore.isDone(dateKey: dateKey, index: index)
-                                ) {
-                                    Task {
-                                        await stretchStore.toggle(dateKey: dateKey, index: index)
-                                    }
-                                }
+                                    name: renameStore.displayName(for: StretchPlan.stretches[index]),
+                                    isDone: stretchStore.isDone(dateKey: dateKey, index: index),
+                                    onToggle: {
+                                        Task {
+                                            await stretchStore.toggle(dateKey: dateKey, index: index)
+                                        }
+                                    },
+                                    onRename: { newName in
+                                        Task {
+                                            await renameStore.rename(
+                                                original: StretchPlan.stretches[index], to: newName)
+                                        }
+                                    })
                             }
                         }
                     }
@@ -79,10 +92,12 @@ struct TodayView: View {
             .task {
                 await completionStore.refresh()
                 await stretchStore.refresh()
+                await renameStore.refresh()
             }
             .refreshable {
                 await completionStore.refresh()
                 await stretchStore.refresh()
+                await renameStore.refresh()
             }
         }
     }
@@ -129,7 +144,8 @@ struct TodayView: View {
 
     @ViewBuilder
     private var errorBanners: some View {
-        ForEach([completionStore.errorMessage, stretchStore.errorMessage].compactMap { $0 },
+        ForEach([completionStore.errorMessage, stretchStore.errorMessage,
+                 renameStore.errorMessage].compactMap { $0 },
                 id: \.self) { message in
             Text(message)
                 .font(.caption)
@@ -184,11 +200,48 @@ struct TodayView: View {
     }
 }
 
+/// The exercise name: a Text normally, an inline TextField after a
+/// long-press. Submit saves the rename; losing focus cancels.
+struct EditableName: View {
+    let name: String
+    let font: Font
+    let onRename: (String) -> Void
+
+    @State private var isEditing = false
+    @State private var draft = ""
+    @FocusState private var focused: Bool
+
+    var body: some View {
+        if isEditing {
+            TextField("Exercise name", text: $draft)
+                .font(font)
+                .focused($focused)
+                .onSubmit {
+                    isEditing = false
+                    onRename(draft)
+                }
+                .onChange(of: focused) { _, nowFocused in
+                    if !nowFocused { isEditing = false }
+                }
+        } else {
+            Text(name)
+                .font(font)
+                .onLongPressGesture {
+                    draft = name
+                    isEditing = true
+                    focused = true
+                }
+        }
+    }
+}
+
 struct PlanEntryRow: View {
     let entry: PlanEntry
+    let displayName: String
     let maxes: TrainingMaxes
     let isDone: Bool
     let onToggle: () -> Void
+    let onRename: (String) -> Void
 
     var body: some View {
         HStack(spacing: 12) {
@@ -199,8 +252,10 @@ struct PlanEntryRow: View {
             }
             VStack(alignment: .leading, spacing: 4) {
                 HStack(alignment: .firstTextBaseline) {
-                    Text(entry.exercise)
-                        .font(.subheadline.weight(entry.exercise == "same lift" ? .regular : .semibold))
+                    EditableName(
+                        name: displayName,
+                        font: .subheadline.weight(entry.exercise == "same lift" ? .regular : .semibold),
+                        onRename: onRename)
                         .foregroundStyle(entry.isSkipped ? .secondary : .primary)
                         .strikethrough(isDone && !entry.isSkipped)
                     Spacer()
@@ -235,14 +290,15 @@ struct StretchRow: View {
     let name: String
     let isDone: Bool
     let onToggle: () -> Void
+    let onRename: (String) -> Void
 
     var body: some View {
         HStack(spacing: 12) {
             Image(systemName: isDone ? "checkmark.circle.fill" : "circle")
                 .font(.system(size: 24))
                 .foregroundStyle(isDone ? .green : .secondary)
-            Text(name)
-                .font(.subheadline.weight(.semibold))
+            EditableName(name: name, font: .subheadline.weight(.semibold),
+                         onRename: onRename)
                 .strikethrough(isDone)
             Spacer()
         }
@@ -258,4 +314,5 @@ struct StretchRow: View {
     TodayView()
         .environmentObject(CompletionStore())
         .environmentObject(StretchStore())
+        .environmentObject(RenameStore())
 }

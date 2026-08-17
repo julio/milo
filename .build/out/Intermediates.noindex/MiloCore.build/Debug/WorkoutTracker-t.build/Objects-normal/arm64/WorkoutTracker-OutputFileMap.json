@@ -26,6 +26,16 @@
     "swift-dependencies" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTracker-t.build/Objects-normal/arm64/Models.swiftdeps",
     "swiftmodule" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTracker-t.build/Objects-normal/arm64/Models~partial.swiftmodule"
   },
+  "/Users/julio/code/personal/milo/WorkoutTracker/Sources/Renames.swift" : {
+    "const-values" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTracker-t.build/Objects-normal/arm64/Renames.swiftconstvalues",
+    "dependencies" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTracker-t.build/Objects-normal/arm64/Renames.d",
+    "diagnostics" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTracker-t.build/Objects-normal/arm64/Renames.dia",
+    "index-unit-output-path" : "/MiloCore.build/Debug/WorkoutTracker-t.build/Objects-normal/arm64/Renames.o",
+    "llvm-bc" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTracker-t.build/Objects-normal/arm64/Renames.bc",
+    "object" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTracker-t.build/Objects-normal/arm64/Renames.o",
+    "swift-dependencies" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTracker-t.build/Objects-normal/arm64/Renames.swiftdeps",
+    "swiftmodule" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTracker-t.build/Objects-normal/arm64/Renames~partial.swiftmodule"
+  },
   "/Users/julio/code/personal/milo/WorkoutTracker/Sources/Stretches.swift" : {
     "const-values" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTracker-t.build/Objects-normal/arm64/Stretches.swiftconstvalues",
     "dependencies" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTracker-t.build/Objects-normal/arm64/Stretches.d",

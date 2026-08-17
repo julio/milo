@@ -36,6 +36,26 @@
     "swift-dependencies" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/ModelsTests.swiftdeps",
     "swiftmodule" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/ModelsTests~partial.swiftmodule"
   },
+  "/Users/julio/code/personal/milo/WorkoutTracker/Tests/RenamesTests.swift" : {
+    "const-values" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/RenamesTests.swiftconstvalues",
+    "dependencies" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/RenamesTests.d",
+    "diagnostics" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/RenamesTests.dia",
+    "index-unit-output-path" : "/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/RenamesTests.o",
+    "llvm-bc" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/RenamesTests.bc",
+    "object" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/RenamesTests.o",
+    "swift-dependencies" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/RenamesTests.swiftdeps",
+    "swiftmodule" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/RenamesTests~partial.swiftmodule"
+  },
+  "/Users/julio/code/personal/milo/WorkoutTracker/Tests/StretchesTests.swift" : {
+    "const-values" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/StretchesTests.swiftconstvalues",
+    "dependencies" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/StretchesTests.d",
+    "diagnostics" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/StretchesTests.dia",
+    "index-unit-output-path" : "/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/StretchesTests.o",
+    "llvm-bc" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/StretchesTests.bc",
+    "object" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/StretchesTests.o",
+    "swift-dependencies" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/StretchesTests.swiftdeps",
+    "swiftmodule" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/StretchesTests~partial.swiftmodule"
+  },
   "/Users/julio/code/personal/milo/WorkoutTracker/Tests/SupabaseBackendTests.swift" : {
     "const-values" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/SupabaseBackendTests.swiftconstvalues",
     "dependencies" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/SupabaseBackendTests.d",

@@ -93,8 +93,16 @@ struct SupabaseBackend: WorkoutBackend {
         return e
     }()
 
+    /// Percent-encodes a value for use inside a PostgREST filter such as
+    /// `original=eq.<value>` — names carry spaces, slashes and parentheses.
+    static func encodeQueryValue(_ value: String) -> String {
+        var allowed = CharacterSet.alphanumerics
+        allowed.insert(charactersIn: "-._~")
+        return value.addingPercentEncoding(withAllowedCharacters: allowed)!
+    }
+
     private func request(path: String, query: String? = nil, method: String,
-                         body: Data? = nil) -> URLRequest {
+                         body: Data? = nil, prefer: String? = nil) -> URLRequest {
         var components = URLComponents(
             url: baseURL.appendingPathComponent("rest/v1/\(path)"),
             resolvingAgainstBaseURL: false)!
@@ -105,6 +113,9 @@ struct SupabaseBackend: WorkoutBackend {
         request.setValue(anonKey, forHTTPHeaderField: "apikey")
         request.setValue("Bearer \(anonKey)", forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        if let prefer {
+            request.setValue(prefer, forHTTPHeaderField: "Prefer")
+        }
         return request
     }
 
@@ -188,6 +199,29 @@ extension SupabaseBackend: StretchBackend {
         try await send(request(
             path: "stretch_completions",
             query: "date=eq.\(completion.date)&stretch_index=eq.\(completion.stretchIndex)",
+            method: "DELETE"))
+    }
+}
+
+extension SupabaseBackend: RenameBackend {
+    func fetchRenames() async throws -> [ExerciseRename] {
+        let data = try await send(request(
+            path: "exercise_renames", query: "select=original,custom",
+            method: "GET"))
+        return try JSONDecoder().decode([ExerciseRename].self, from: data)
+    }
+
+    func upsert(_ rename: ExerciseRename) async throws {
+        try await send(request(
+            path: "exercise_renames", method: "POST",
+            body: try JSONEncoder().encode(rename),
+            prefer: "resolution=merge-duplicates"))
+    }
+
+    func deleteRename(original: String) async throws {
+        try await send(request(
+            path: "exercise_renames",
+            query: "original=eq.\(Self.encodeQueryValue(original))",
             method: "DELETE"))
     }
 }

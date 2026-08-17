@@ -71,6 +71,13 @@
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
+		<key>BuildFile_Renames</key>
+		<dict>
+			<key>fileRef</key>
+			<string>File_Renames</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
 		<key>BuildFile_Store</key>
 		<dict>
 			<key>fileRef</key>
@@ -220,6 +227,17 @@
 			<key>sourceTree</key>
 			<string>SOURCE_ROOT</string>
 		</dict>
+		<key>File_Renames</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.swift</string>
+			<key>path</key>
+			<string>Renames.swift</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
 		<key>File_Store</key>
 		<dict>
 			<key>isa</key>
@@ -306,6 +324,7 @@
 				<string>BuildFile_CalendarView</string>
 				<string>BuildFile_Stretches</string>
 				<string>BuildFile_TodayView</string>
+				<string>BuildFile_Renames</string>
 			</array>
 			<key>isa</key>
 			<string>PBXSourcesBuildPhase</string>
@@ -383,6 +402,7 @@
 				<string>File_CalendarView</string>
 				<string>File_Stretches</string>
 				<string>File_TodayView</string>
+				<string>File_Renames</string>
 			</array>
 			<key>isa</key>
 			<string>PBXGroup</string>

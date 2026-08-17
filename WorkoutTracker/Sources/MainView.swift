@@ -24,4 +24,5 @@ struct MainView: View {
         .environmentObject(WorkoutStore())
         .environmentObject(CompletionStore())
         .environmentObject(StretchStore())
+        .environmentObject(RenameStore())
 }
