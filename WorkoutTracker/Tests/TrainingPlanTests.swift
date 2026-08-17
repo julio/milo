@@ -191,6 +191,14 @@ final class TrainingPlanTests: XCTestCase {
         XCTAssertEqual(TrainingPlan.defaultIndex(for: date(1, 1, year: 2027)), 38)
     }
 
+    func testDayForDate() {
+        XCTAssertEqual(TrainingPlan.day(for: date(8, 17))?.id, 0)
+        XCTAssertEqual(TrainingPlan.day(for: date(11, 13))?.id, 38)
+        XCTAssertNil(TrainingPlan.day(for: date(8, 16)))
+        XCTAssertNil(TrainingPlan.day(for: date(8, 18)))
+        XCTAssertNil(TrainingPlan.day(for: date(8, 17, year: 2027)))
+    }
+
     // MARK: - Presentation helpers
 
     func testDateTitleContainsWeekdayAndDay() {

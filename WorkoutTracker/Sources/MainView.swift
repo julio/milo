@@ -3,13 +3,9 @@ import SwiftUI
 struct MainView: View {
     var body: some View {
         TabView {
-            TrainingPlanView()
+            TodayView()
                 .tabItem {
-                    Label("Plan", systemImage: "dumbbell")
-                }
-            StretchesView()
-                .tabItem {
-                    Label("Stretches", systemImage: "figure.cooldown")
+                    Label("Today", systemImage: "checklist")
                 }
             CalendarView()
                 .tabItem {

@@ -15,9 +15,8 @@ let package = Package(
                 "WorkoutTrackerApp.swift",
                 "ContentView.swift",
                 "MainView.swift",
-                "TrainingPlanView.swift",
                 "CalendarView.swift",
-                "StretchesView.swift",
+                "TodayView.swift",
             ]
         ),
         .testTarget(

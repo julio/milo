@@ -136,6 +136,30 @@ final class DayProgressTests: XCTestCase {
         Set(indices.map { SetCompletion(dayId: dayId, entryIndex: $0) })
     }
 
+    func testCountsOnRestDayAreStretchesOnly() {
+        let counts = DayProgress.counts(
+            month: 8, day: 16, trainingCompletions: [],
+            stretchCompletions: stretchSet("2026-08-16", [0, 1]))
+        XCTAssertEqual(counts.done, 2)
+        XCTAssertEqual(counts.total, 6)
+    }
+
+    func testCountsOnTrainingDayIncludeBoth() {
+        let counts = DayProgress.counts(
+            month: 8, day: 17,
+            trainingCompletions: trainingSet(0, [0, 1, 2]),
+            stretchCompletions: stretchSet("2026-08-17", [0]))
+        XCTAssertEqual(counts.done, 4)
+        XCTAssertEqual(counts.total, 9 + 6)
+    }
+
+    func testCountsBeforeEverythingAreZero() {
+        let counts = DayProgress.counts(
+            month: 8, day: 10, trainingCompletions: [], stretchCompletions: [])
+        XCTAssertEqual(counts.total, 0)
+        XCTAssertEqual(counts.done, 0)
+    }
+
     func testDayBeforeEverythingIsNotInPlan() {
         XCTAssertEqual(DayProgress.combinedStatus(
             month: 8, day: 10, trainingCompletions: [], stretchCompletions: []),

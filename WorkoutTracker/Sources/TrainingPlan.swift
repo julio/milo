@@ -91,4 +91,12 @@ enum TrainingPlan {
         }
         return days.count - 1
     }
+
+    /// The training session on a calendar date, if that date is one of the
+    /// plan's 39 sessions.
+    static func day(for date: Date, calendar: Calendar = .current) -> PlanDay? {
+        let c = calendar.dateComponents([.year, .month, .day], from: date)
+        guard c.year == PlanDay.planYear else { return nil }
+        return days.first { $0.month == c.month && $0.day == c.day }
+    }
 }

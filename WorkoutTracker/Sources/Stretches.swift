@@ -106,9 +106,11 @@ class StretchStore: ObservableObject {
 /// Combines training sets and stretches into one status per calendar day,
 /// so the calendar answers "did I do everything that day?".
 enum DayProgress {
-    static func combinedStatus(year: Int = PlanDay.planYear, month: Int, day: Int,
-                               trainingCompletions: Set<SetCompletion>,
-                               stretchCompletions: Set<StretchCompletion>) -> DayStatus {
+    /// Everything trackable on a calendar day (training sets + stretches)
+    /// and how much of it is done.
+    static func counts(year: Int = PlanDay.planYear, month: Int, day: Int,
+                       trainingCompletions: Set<SetCompletion>,
+                       stretchCompletions: Set<StretchCompletion>) -> (done: Int, total: Int) {
         var total = 0
         var done = 0
 
@@ -131,6 +133,17 @@ enum DayProgress {
                     StretchCompletion(date: key, stretchIndex: $0))
             }.count
         }
+
+        return (done, total)
+    }
+
+    static func combinedStatus(year: Int = PlanDay.planYear, month: Int, day: Int,
+                               trainingCompletions: Set<SetCompletion>,
+                               stretchCompletions: Set<StretchCompletion>) -> DayStatus {
+        let (done, total) = counts(
+            year: year, month: month, day: day,
+            trainingCompletions: trainingCompletions,
+            stretchCompletions: stretchCompletions)
 
         if total == 0 { return .notInPlan }
         if done == 0 { return .pending }
