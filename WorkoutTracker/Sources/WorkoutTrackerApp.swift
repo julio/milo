@@ -7,6 +7,7 @@ struct WorkoutTrackerApp: App {
             MainView()
                 .environmentObject(WorkoutStore())
                 .environmentObject(CompletionStore())
+                .environmentObject(StretchStore())
         }
     }
 }

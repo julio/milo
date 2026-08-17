@@ -7,6 +7,10 @@ struct MainView: View {
                 .tabItem {
                     Label("Plan", systemImage: "dumbbell")
                 }
+            StretchesView()
+                .tabItem {
+                    Label("Stretches", systemImage: "figure.cooldown")
+                }
             CalendarView()
                 .tabItem {
                     Label("Calendar", systemImage: "calendar")
@@ -23,4 +27,5 @@ struct MainView: View {
     MainView()
         .environmentObject(WorkoutStore())
         .environmentObject(CompletionStore())
+        .environmentObject(StretchStore())
 }

@@ -2,6 +2,7 @@ import SwiftUI
 
 struct CalendarView: View {
     @EnvironmentObject var completionStore: CompletionStore
+    @EnvironmentObject var stretchStore: StretchStore
     @State private var monthIndex = CalendarView.initialMonthIndex()
 
     private let months = PlanCalendar.months()
@@ -28,9 +29,11 @@ struct CalendarView: View {
             .navigationBarTitleDisplayMode(.inline)
             .task {
                 await completionStore.refresh()
+                await stretchStore.refresh()
             }
             .refreshable {
                 await completionStore.refresh()
+                await stretchStore.refresh()
             }
         }
     }
@@ -76,7 +79,10 @@ struct CalendarView: View {
         LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 7), spacing: 10) {
             ForEach(Array(PlanCalendar.grid(month).enumerated()), id: \.offset) { _, day in
                 if let day {
-                    DayCell(day: day, status: completionStore.status(month: month.month, day: day))
+                    DayCell(day: day, status: DayProgress.combinedStatus(
+                        month: month.month, day: day,
+                        trainingCompletions: completionStore.completions,
+                        stretchCompletions: stretchStore.completions))
                 } else {
                     Color.clear.frame(height: 40)
                 }
@@ -135,4 +141,5 @@ struct LegendDot: View {
 #Preview {
     CalendarView()
         .environmentObject(CompletionStore())
+        .environmentObject(StretchStore())
 }

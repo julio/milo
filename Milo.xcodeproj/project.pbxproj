@@ -85,6 +85,20 @@
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
+		<key>BuildFile_Stretches</key>
+		<dict>
+			<key>fileRef</key>
+			<string>File_Stretches</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>BuildFile_StretchesView</key>
+		<dict>
+			<key>fileRef</key>
+			<string>File_StretchesView</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
 		<key>BuildFile_Supabase</key>
 		<dict>
 			<key>fileRef</key>
@@ -246,6 +260,28 @@
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
+		<key>File_Stretches</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.swift</string>
+			<key>path</key>
+			<string>Stretches.swift</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>File_StretchesView</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.swift</string>
+			<key>path</key>
+			<string>StretchesView.swift</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
 		<key>File_Supabase</key>
 		<dict>
 			<key>isa</key>
@@ -287,6 +323,8 @@
 				<string>BuildFile_Supabase</string>
 				<string>BuildFile_Completions</string>
 				<string>BuildFile_CalendarView</string>
+				<string>BuildFile_Stretches</string>
+				<string>BuildFile_StretchesView</string>
 			</array>
 			<key>isa</key>
 			<string>PBXSourcesBuildPhase</string>
@@ -363,6 +401,8 @@
 				<string>File_Supabase</string>
 				<string>File_Completions</string>
 				<string>File_CalendarView</string>
+				<string>File_Stretches</string>
+				<string>File_StretchesView</string>
 			</array>
 			<key>isa</key>
 			<string>PBXGroup</string>

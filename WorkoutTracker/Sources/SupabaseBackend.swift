@@ -169,3 +169,25 @@ extension SupabaseBackend: CompletionBackend {
             method: "DELETE"))
     }
 }
+
+extension SupabaseBackend: StretchBackend {
+    func fetchStretchCompletions() async throws -> [StretchCompletion] {
+        let data = try await send(request(
+            path: "stretch_completions", query: "select=date,stretch_index",
+            method: "GET"))
+        return try JSONDecoder().decode([StretchCompletion].self, from: data)
+    }
+
+    func insert(_ completion: StretchCompletion) async throws {
+        try await send(request(
+            path: "stretch_completions", method: "POST",
+            body: try JSONEncoder().encode(completion)))
+    }
+
+    func delete(_ completion: StretchCompletion) async throws {
+        try await send(request(
+            path: "stretch_completions",
+            query: "date=eq.\(completion.date)&stretch_index=eq.\(completion.stretchIndex)",
+            method: "DELETE"))
+    }
+}

@@ -62,7 +62,7 @@ class CompletionStore: ObservableObject {
 
     /// Indices of a day's entries that count toward completion — everything
     /// except rows the plan itself skips (deload "Volume work").
-    static func trackableIndices(for day: PlanDay) -> [Int] {
+    nonisolated static func trackableIndices(for day: PlanDay) -> [Int] {
         day.entries.indices.filter { !day.entries[$0].isSkipped }
     }
 
