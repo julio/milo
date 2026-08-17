@@ -473,8 +473,10 @@
 		<dict>
 			<key>buildSettings</key>
 			<dict>
-				<key>CODE_SIGN_IDENTITY</key>
-				<string></string>
+				<key>CODE_SIGN_STYLE</key>
+				<string>Automatic</string>
+				<key>DEVELOPMENT_TEAM</key>
+				<string>U9U532274U</string>
 				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
 				<string>26.0</string>
 				<key>PRODUCT_BUNDLE_IDENTIFIER</key>
@@ -497,8 +499,10 @@
 		<dict>
 			<key>buildSettings</key>
 			<dict>
-				<key>CODE_SIGN_IDENTITY</key>
-				<string></string>
+				<key>CODE_SIGN_STYLE</key>
+				<string>Automatic</string>
+				<key>DEVELOPMENT_TEAM</key>
+				<string>U9U532274U</string>
 				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
 				<string>26.0</string>
 				<key>PRODUCT_BUNDLE_IDENTIFIER</key>
@@ -525,6 +529,8 @@
 				<string>AppIcon</string>
 				<key>CODE_SIGN_STYLE</key>
 				<string>Automatic</string>
+				<key>DEVELOPMENT_TEAM</key>
+				<string>U9U532274U</string>
 				<key>INFOPLIST_FILE</key>
 				<string>WorkoutTracker/Info.plist</string>
 				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
@@ -555,6 +561,8 @@
 				<string>AppIcon</string>
 				<key>CODE_SIGN_STYLE</key>
 				<string>Automatic</string>
+				<key>DEVELOPMENT_TEAM</key>
+				<string>U9U532274U</string>
 				<key>INFOPLIST_FILE</key>
 				<string>WorkoutTracker/Info.plist</string>
 				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
