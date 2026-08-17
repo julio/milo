@@ -4,32 +4,47 @@ import Combine
 @MainActor
 class WorkoutStore: ObservableObject {
     @Published var workouts: [Workout] = []
+    @Published var errorMessage: String?
 
-    private let fileURL: URL
-    private let encoder = JSONEncoder()
-    private let decoder = JSONDecoder()
+    private let backend: WorkoutBackend
 
-    init(fileURL: URL? = nil) {
-        self.fileURL = fileURL ?? WorkoutStore.defaultFileURL
-        decoder.dateDecodingStrategy = .iso8601
-        encoder.dateEncodingStrategy = .iso8601
-        load()
+    init(backend: WorkoutBackend = SupabaseBackend()) {
+        self.backend = backend
     }
 
-    func addWorkout(_ workout: Workout) {
-        workouts.append(workout)
-        save()
+    func refresh() async {
+        await run {
+            workouts = try await backend.fetchWorkouts()
+        }
     }
 
-    func deleteWorkout(_ workout: Workout) {
-        workouts.removeAll { $0.id == workout.id }
-        save()
+    func addWorkout(_ workout: Workout) async {
+        await run {
+            try await backend.insert(workout)
+            workouts.append(workout)
+        }
     }
 
-    func updateWorkout(_ workout: Workout) {
-        if let index = workouts.firstIndex(where: { $0.id == workout.id }) {
-            workouts[index] = workout
-            save()
+    func deleteWorkout(_ workout: Workout) async {
+        await run {
+            try await backend.delete(id: workout.id)
+            workouts.removeAll { $0.id == workout.id }
+        }
+    }
+
+    func updateWorkout(_ workout: Workout) async {
+        await run {
+            try await backend.update(workout)
+            if let index = workouts.firstIndex(where: { $0.id == workout.id }) {
+                workouts[index] = workout
+            }
+        }
+    }
+
+    func clearAllWorkouts() async {
+        await run {
+            try await backend.deleteAll()
+            workouts.removeAll()
         }
     }
 
@@ -44,31 +59,14 @@ class WorkoutStore: ObservableObject {
         return DailyStats(id: UUID(), date: date, workoutCount: dayWorkouts.count, totalDuration: totalDuration)
     }
 
-    func clearAllWorkouts() {
-        workouts.removeAll()
-        save()
-    }
-
-    private func save() {
+    /// Runs a backend operation, clearing or setting the error banner. On
+    /// failure the in-memory list is left untouched so nothing vanishes.
+    private func run(_ operation: () async throws -> Void) async {
         do {
-            let data = try encoder.encode(workouts)
-            try data.write(to: fileURL)
+            try await operation()
+            errorMessage = nil
         } catch {
-            print("Failed to save workouts: \(error)")
+            errorMessage = error.localizedDescription
         }
-    }
-
-    private func load() {
-        do {
-            let data = try Data(contentsOf: fileURL)
-            workouts = try decoder.decode([Workout].self, from: data)
-        } catch {
-            workouts = []
-        }
-    }
-
-    static var defaultFileURL: URL {
-        FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-            .appendingPathComponent("workouts.json")
     }
 }

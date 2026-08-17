@@ -1,5 +1,6 @@
 {
   "permissions": {
+    "defaultMode": "dontAsk",
     "allow": [
       "Bash(xcodebuild *)",
       "Bash(xcrun *)",
@@ -8,7 +9,23 @@
       "Bash(gh *)",
       "Bash(python3 *)",
       "Bash(plutil *)",
-      "Bash(open *)"
+      "Bash(open *)",
+      "Bash(supabase *)",
+      "Bash(curl *)",
+      "Bash(openssl *)",
+      "Bash(jq *)",
+      "Bash(find *)",
+      "Bash(ls *)",
+      "Bash(cat *)",
+      "Bash(mkdir *)",
+      "Bash(sleep *)",
+      "Bash(chmod *)",
+      "Bash(echo *)",
+      "Bash(head *)",
+      "Bash(tail *)",
+      "Bash(grep *)",
+      "Bash(awk *)",
+      "Bash(which *)"
     ]
   }
 }

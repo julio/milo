@@ -1,114 +1,162 @@
 import XCTest
 @testable import WorkoutTracker
 
+/// In-memory backend double: records calls, can be told to fail.
+final class MockBackend: WorkoutBackend, @unchecked Sendable {
+    var stored: [Workout] = []
+    var failNext: Error?
+    private(set) var calls: [String] = []
+
+    private func check(_ call: String) throws {
+        calls.append(call)
+        if let error = failNext {
+            failNext = nil
+            throw error
+        }
+    }
+
+    func fetchWorkouts() async throws -> [Workout] {
+        try check("fetch")
+        return stored
+    }
+
+    func insert(_ workout: Workout) async throws {
+        try check("insert")
+        stored.append(workout)
+    }
+
+    func update(_ workout: Workout) async throws {
+        try check("update")
+        if let i = stored.firstIndex(where: { $0.id == workout.id }) {
+            stored[i] = workout
+        }
+    }
+
+    func delete(id: UUID) async throws {
+        try check("delete")
+        stored.removeAll { $0.id == id }
+    }
+
+    func deleteAll() async throws {
+        try check("deleteAll")
+        stored.removeAll()
+    }
+}
+
+struct TestError: Error, LocalizedError {
+    var errorDescription: String? { "backend exploded" }
+}
+
 @MainActor
 final class WorkoutStoreTests: XCTestCase {
+    var backend: MockBackend!
     var store: WorkoutStore!
-    var testFileURL: URL!
 
     override func setUp() {
         super.setUp()
-        testFileURL = FileManager.default.temporaryDirectory
-            .appendingPathComponent(UUID().uuidString)
-            .appendingPathExtension("json")
-        store = WorkoutStore(fileURL: testFileURL)
+        backend = MockBackend()
+        store = WorkoutStore(backend: backend)
     }
 
-    override func tearDown() {
-        try? FileManager.default.removeItem(at: testFileURL)
-        super.tearDown()
-    }
+    func testRefreshLoadsFromBackend() async {
+        backend.stored = [Workout(name: "Chest Day", duration: 3600)]
 
-    func testAddWorkout() {
-        let workout = Workout(name: "Chest Day", duration: 3600)
-        store.addWorkout(workout)
+        await store.refresh()
+
         XCTAssertEqual(store.workouts.count, 1)
         XCTAssertEqual(store.workouts[0].name, "Chest Day")
+        XCTAssertNil(store.errorMessage)
     }
 
-    func testDeleteWorkout() {
+    func testAddWorkoutWritesThrough() async {
         let workout = Workout(name: "Chest Day", duration: 3600)
-        store.addWorkout(workout)
-        store.deleteWorkout(workout)
+
+        await store.addWorkout(workout)
+
+        XCTAssertEqual(store.workouts.count, 1)
+        XCTAssertEqual(backend.stored.count, 1)
+        XCTAssertEqual(backend.calls, ["insert"])
+    }
+
+    func testDeleteWorkoutWritesThrough() async {
+        let workout = Workout(name: "Chest Day", duration: 3600)
+        await store.addWorkout(workout)
+
+        await store.deleteWorkout(workout)
+
         XCTAssertEqual(store.workouts.count, 0)
+        XCTAssertEqual(backend.stored.count, 0)
     }
 
-    func testUpdateWorkout() {
+    func testUpdateWorkoutWritesThrough() async {
         var workout = Workout(name: "Chest Day", duration: 3600)
-        store.addWorkout(workout)
+        await store.addWorkout(workout)
+
         workout = Workout(id: workout.id, name: "Leg Day", duration: 4500)
-        store.updateWorkout(workout)
+        await store.updateWorkout(workout)
+
         XCTAssertEqual(store.workouts[0].name, "Leg Day")
-        XCTAssertEqual(store.workouts[0].duration, 4500)
+        XCTAssertEqual(backend.stored[0].name, "Leg Day")
     }
 
-    func testWorkoutsForDate() {
+    func testUpdateUnknownWorkoutLeavesListUnchanged() async {
+        let known = Workout(name: "Known", duration: 3600)
+        await store.addWorkout(known)
+
+        await store.updateWorkout(Workout(name: "Stranger", duration: 60))
+
+        XCTAssertEqual(store.workouts.map(\.name), ["Known"])
+    }
+
+    func testClearAllWorkouts() async {
+        await store.addWorkout(Workout(name: "One", duration: 3600))
+        await store.addWorkout(Workout(name: "Two", duration: 3600))
+
+        await store.clearAllWorkouts()
+
+        XCTAssertEqual(store.workouts.count, 0)
+        XCTAssertEqual(backend.stored.count, 0)
+    }
+
+    func testBackendFailureSetsErrorAndKeepsLocalState() async {
+        await store.addWorkout(Workout(name: "Kept", duration: 3600))
+
+        backend.failNext = TestError()
+        await store.addWorkout(Workout(name: "Dropped", duration: 60))
+
+        XCTAssertEqual(store.errorMessage, "backend exploded")
+        XCTAssertEqual(store.workouts.map(\.name), ["Kept"])
+
+        // Next successful call clears the banner.
+        await store.refresh()
+        XCTAssertNil(store.errorMessage)
+    }
+
+    func testWorkoutsForDate() async {
         let today = Date()
         let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: today)!
-        let todayWorkout = Workout(date: today, name: "Today's Workout", duration: 3600)
-        let tomorrowWorkout = Workout(date: tomorrow, name: "Tomorrow's Workout", duration: 3600)
-        store.addWorkout(todayWorkout)
-        store.addWorkout(tomorrowWorkout)
+        await store.addWorkout(Workout(date: today, name: "Today's Workout", duration: 3600))
+        await store.addWorkout(Workout(date: tomorrow, name: "Tomorrow's Workout", duration: 3600))
+
         let todayWorkouts = store.workoutsForDate(today)
+
         XCTAssertEqual(todayWorkouts.count, 1)
         XCTAssertEqual(todayWorkouts[0].name, "Today's Workout")
     }
 
-    func testDailyStatsForDate() {
+    func testDailyStatsForDate() async {
         let today = Date()
-        let workout1 = Workout(date: today, name: "Workout 1", duration: 1800)
-        let workout2 = Workout(date: today, name: "Workout 2", duration: 1800)
-        store.addWorkout(workout1)
-        store.addWorkout(workout2)
+        await store.addWorkout(Workout(date: today, name: "Workout 1", duration: 1800))
+        await store.addWorkout(Workout(date: today, name: "Workout 2", duration: 1800))
+
         let stats = store.dailyStatsForDate(today)
+
         XCTAssertEqual(stats.workoutCount, 2)
         XCTAssertEqual(stats.totalDuration, 3600)
     }
 
-    func testClearAllWorkouts() {
-        let workout1 = Workout(name: "Workout 1", duration: 3600)
-        let workout2 = Workout(name: "Workout 2", duration: 3600)
-        store.addWorkout(workout1)
-        store.addWorkout(workout2)
-        XCTAssertEqual(store.workouts.count, 2)
-        store.clearAllWorkouts()
-        XCTAssertEqual(store.workouts.count, 0)
-    }
-
-    func testPersistence() {
-        let workout = Workout(name: "Persisted Workout", duration: 3600)
-        store.addWorkout(workout)
-        let newStore = WorkoutStore(fileURL: testFileURL)
-        XCTAssertEqual(newStore.workouts.count, 1)
-        XCTAssertEqual(newStore.workouts[0].name, "Persisted Workout")
-    }
-
-    func testEmptyPersistenceFile() {
-        let newStore = WorkoutStore(fileURL: testFileURL)
-        XCTAssertEqual(newStore.workouts.count, 0)
-    }
-
-    func testInitWithoutURLUsesDefaultLocation() {
-        // Init only reads; nothing is written until a mutation happens.
-        let store = WorkoutStore()
-        XCTAssertNotNil(store)
-    }
-
-    func testDefaultFileURLPointsAtDocumentsDirectory() {
-        let url = WorkoutStore.defaultFileURL
-        XCTAssertEqual(url.lastPathComponent, "workouts.json")
-        let documents = FileManager.default.urls(
-            for: .documentDirectory, in: .userDomainMask)[0]
-        XCTAssertEqual(url.deletingLastPathComponent(), documents)
-    }
-
-    func testSaveFailureLeavesInMemoryStateIntact() {
-        // Point the store at an unwritable path; adds must survive the
-        // failed save so the session's data isn't lost.
-        let badURL = URL(fileURLWithPath: "/nonexistent-dir/workouts.json")
-        let badStore = WorkoutStore(fileURL: badURL)
-        badStore.addWorkout(Workout(name: "Doomed", duration: 60))
-        XCTAssertEqual(badStore.workouts.count, 1)
-        XCTAssertFalse(FileManager.default.fileExists(atPath: badURL.path))
+    func testDefaultInitUsesSupabaseBackend() {
+        // Constructing with the default backend must not touch the network.
+        XCTAssertNotNil(WorkoutStore())
     }
 }

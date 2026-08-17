@@ -16,6 +16,14 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
+                if let message = store.errorMessage {
+                    Text(message)
+                        .font(.caption)
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding(8)
+                        .background(Color.red)
+                }
                 DatePicker(
                     "Select Date",
                     selection: $selectedDate,
@@ -70,6 +78,12 @@ struct ContentView: View {
             .sheet(isPresented: $showingNewWorkout) {
                 NewWorkoutSheet(isPresented: $showingNewWorkout)
                     .environmentObject(store)
+            }
+            .task {
+                await store.refresh()
+            }
+            .refreshable {
+                await store.refresh()
             }
         }
     }
@@ -154,7 +168,7 @@ struct WorkoutRow: View {
         .cornerRadius(12)
         .contextMenu {
             Button(role: .destructive) {
-                store.deleteWorkout(workout)
+                Task { await store.deleteWorkout(workout) }
             } label: {
                 Label("Delete", systemImage: "trash")
             }
@@ -200,7 +214,7 @@ struct NewWorkoutSheet: View {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Add") {
                         let workout = Workout(name: workoutName, duration: duration)
-                        store.addWorkout(workout)
+                        Task { await store.addWorkout(workout) }
                         isPresented = false
                     }
                     .disabled(workoutName.isEmpty)

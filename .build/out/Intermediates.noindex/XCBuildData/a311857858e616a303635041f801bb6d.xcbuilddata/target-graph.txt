@@ -1,0 +1,8 @@
+Target dependency graph (3 targets)
+Target 'AllIncludingTests' in project 'Aggregate'
+➜ Explicit dependency on target 'WorkoutTrackerTests-product' in project 'MiloCore'
+➜ Dependency on target 'WorkoutTrackerTests-product' in project 'MiloCore' via transitive dependency through 'WorkoutTrackerTests-test-runner'
+➜ Explicit dependency on target 'WorkoutTracker' in project 'MiloCore'
+Target 'WorkoutTrackerTests-product' in project 'MiloCore'
+➜ Explicit dependency on target 'WorkoutTracker' in project 'MiloCore'
+Target 'WorkoutTracker' in project 'MiloCore' (no dependencies)

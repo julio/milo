@@ -71,6 +71,13 @@
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
+		<key>BuildFile_Supabase</key>
+		<dict>
+			<key>fileRef</key>
+			<string>File_Supabase</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
 		<key>File_App</key>
 		<dict>
 			<key>isa</key>
@@ -203,6 +210,17 @@
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
+		<key>File_Supabase</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.swift</string>
+			<key>path</key>
+			<string>SupabaseBackend.swift</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
 		<key>PBXBuildPhase_Resources</key>
 		<dict>
 			<key>buildActionMask</key>
@@ -230,6 +248,7 @@
 				<string>BuildFile_PlanData</string>
 				<string>BuildFile_PlanView</string>
 				<string>BuildFile_MainView</string>
+				<string>BuildFile_Supabase</string>
 			</array>
 			<key>isa</key>
 			<string>PBXSourcesBuildPhase</string>
@@ -303,6 +322,7 @@
 				<string>File_PlanData</string>
 				<string>File_PlanView</string>
 				<string>File_MainView</string>
+				<string>File_Supabase</string>
 			</array>
 			<key>isa</key>
 			<string>PBXGroup</string>
