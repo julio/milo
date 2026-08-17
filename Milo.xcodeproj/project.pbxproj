@@ -29,10 +29,38 @@
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
+		<key>BuildFile_MainView</key>
+		<dict>
+			<key>fileRef</key>
+			<string>File_MainView</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
 		<key>BuildFile_Models</key>
 		<dict>
 			<key>fileRef</key>
 			<string>File_Models</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>BuildFile_Plan</key>
+		<dict>
+			<key>fileRef</key>
+			<string>File_Plan</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>BuildFile_PlanData</key>
+		<dict>
+			<key>fileRef</key>
+			<string>File_PlanData</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>BuildFile_PlanView</key>
+		<dict>
+			<key>fileRef</key>
+			<string>File_PlanView</string>
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
@@ -76,6 +104,17 @@
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
+		<key>File_MainView</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.swift</string>
+			<key>path</key>
+			<string>MainView.swift</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
 		<key>File_Models</key>
 		<dict>
 			<key>isa</key>
@@ -95,6 +134,39 @@
 			<string>sourcecode.swift</string>
 			<key>path</key>
 			<string>ModelsTests.swift</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>File_Plan</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.swift</string>
+			<key>path</key>
+			<string>TrainingPlan.swift</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>File_PlanData</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.swift</string>
+			<key>path</key>
+			<string>TrainingPlanData.swift</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>File_PlanView</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.swift</string>
+			<key>path</key>
+			<string>TrainingPlanView.swift</string>
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
@@ -154,6 +226,10 @@
 				<string>BuildFile_Content</string>
 				<string>BuildFile_Models</string>
 				<string>BuildFile_Store</string>
+				<string>BuildFile_Plan</string>
+				<string>BuildFile_PlanData</string>
+				<string>BuildFile_PlanView</string>
+				<string>BuildFile_MainView</string>
 			</array>
 			<key>isa</key>
 			<string>PBXSourcesBuildPhase</string>
@@ -223,6 +299,10 @@
 				<string>File_Content</string>
 				<string>File_Models</string>
 				<string>File_Store</string>
+				<string>File_Plan</string>
+				<string>File_PlanData</string>
+				<string>File_PlanView</string>
+				<string>File_MainView</string>
 			</array>
 			<key>isa</key>
 			<string>PBXGroup</string>

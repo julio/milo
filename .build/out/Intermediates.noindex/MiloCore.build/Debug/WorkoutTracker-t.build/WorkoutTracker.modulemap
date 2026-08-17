@@ -1,0 +1,4 @@
+module WorkoutTracker {
+header "WorkoutTracker-Swift.h"
+export *
+}

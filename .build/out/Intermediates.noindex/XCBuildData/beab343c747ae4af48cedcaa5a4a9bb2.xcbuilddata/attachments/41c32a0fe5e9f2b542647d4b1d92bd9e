@@ -1,0 +1,49 @@
+{
+  "" : {
+    "diagnostics" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/WorkoutTrackerTests-primary.dia",
+    "emit-module-dependencies" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/WorkoutTrackerTests-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/WorkoutTrackerTests-primary-emit-module.dia",
+    "pch" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/WorkoutTrackerTests-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/WorkoutTrackerTests-primary.swiftdeps"
+  },
+  "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/DerivedSources/test_entry_point.swift" : {
+    "const-values" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/test_entry_point.swiftconstvalues",
+    "dependencies" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/test_entry_point.d",
+    "diagnostics" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/test_entry_point.dia",
+    "index-unit-output-path" : "/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/test_entry_point.o",
+    "llvm-bc" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/test_entry_point.bc",
+    "object" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/test_entry_point.o",
+    "swift-dependencies" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/test_entry_point.swiftdeps",
+    "swiftmodule" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/test_entry_point~partial.swiftmodule"
+  },
+  "/Users/julio/code/personal/milo/WorkoutTracker/Tests/ModelsTests.swift" : {
+    "const-values" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/ModelsTests.swiftconstvalues",
+    "dependencies" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/ModelsTests.d",
+    "diagnostics" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/ModelsTests.dia",
+    "index-unit-output-path" : "/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/ModelsTests.o",
+    "llvm-bc" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/ModelsTests.bc",
+    "object" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/ModelsTests.o",
+    "swift-dependencies" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/ModelsTests.swiftdeps",
+    "swiftmodule" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/ModelsTests~partial.swiftmodule"
+  },
+  "/Users/julio/code/personal/milo/WorkoutTracker/Tests/TrainingPlanTests.swift" : {
+    "const-values" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/TrainingPlanTests.swiftconstvalues",
+    "dependencies" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/TrainingPlanTests.d",
+    "diagnostics" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/TrainingPlanTests.dia",
+    "index-unit-output-path" : "/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/TrainingPlanTests.o",
+    "llvm-bc" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/TrainingPlanTests.bc",
+    "object" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/TrainingPlanTests.o",
+    "swift-dependencies" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/TrainingPlanTests.swiftdeps",
+    "swiftmodule" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/TrainingPlanTests~partial.swiftmodule"
+  },
+  "/Users/julio/code/personal/milo/WorkoutTracker/Tests/WorkoutStoreTests.swift" : {
+    "const-values" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/WorkoutStoreTests.swiftconstvalues",
+    "dependencies" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/WorkoutStoreTests.d",
+    "diagnostics" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/WorkoutStoreTests.dia",
+    "index-unit-output-path" : "/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/WorkoutStoreTests.o",
+    "llvm-bc" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/WorkoutStoreTests.bc",
+    "object" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/WorkoutStoreTests.o",
+    "swift-dependencies" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/WorkoutStoreTests.swiftdeps",
+    "swiftmodule" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTrackerTests-p.build/Objects-normal/arm64/WorkoutStoreTests~partial.swiftmodule"
+  }
+}

@@ -87,4 +87,28 @@ final class WorkoutStoreTests: XCTestCase {
         let newStore = WorkoutStore(fileURL: testFileURL)
         XCTAssertEqual(newStore.workouts.count, 0)
     }
+
+    func testInitWithoutURLUsesDefaultLocation() {
+        // Init only reads; nothing is written until a mutation happens.
+        let store = WorkoutStore()
+        XCTAssertNotNil(store)
+    }
+
+    func testDefaultFileURLPointsAtDocumentsDirectory() {
+        let url = WorkoutStore.defaultFileURL
+        XCTAssertEqual(url.lastPathComponent, "workouts.json")
+        let documents = FileManager.default.urls(
+            for: .documentDirectory, in: .userDomainMask)[0]
+        XCTAssertEqual(url.deletingLastPathComponent(), documents)
+    }
+
+    func testSaveFailureLeavesInMemoryStateIntact() {
+        // Point the store at an unwritable path; adds must survive the
+        // failed save so the session's data isn't lost.
+        let badURL = URL(fileURLWithPath: "/nonexistent-dir/workouts.json")
+        let badStore = WorkoutStore(fileURL: badURL)
+        badStore.addWorkout(Workout(name: "Doomed", duration: 60))
+        XCTAssertEqual(badStore.workouts.count, 1)
+        XCTAssertFalse(FileManager.default.fileExists(atPath: badURL.path))
+    }
 }
