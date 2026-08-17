@@ -122,27 +122,27 @@ final class TrainingPlanTests: XCTestCase {
     // MARK: - Weight formula (mirrors the HTML's JS: round(tm*pct/100/5)*5)
 
     func testWeightFormulaCycle1() {
-        XCTAssertEqual(maxes.weight(lift: .squat, cycle: 1, pct: 65), 120)
-        XCTAssertEqual(maxes.weight(lift: .squat, cycle: 1, pct: 75), 140)
-        XCTAssertEqual(maxes.weight(lift: .squat, cycle: 1, pct: 85), 155)
-        XCTAssertEqual(maxes.weight(lift: .squat, cycle: 1, pct: 50), 95)
+        XCTAssertEqual(maxes.weight(lift: .squat, cycle: 1, pct: 65), 90)
+        XCTAssertEqual(maxes.weight(lift: .squat, cycle: 1, pct: 75), 100)
+        XCTAssertEqual(maxes.weight(lift: .squat, cycle: 1, pct: 85), 115)
+        XCTAssertEqual(maxes.weight(lift: .squat, cycle: 1, pct: 50), 70)
         XCTAssertEqual(maxes.weight(lift: .bench, cycle: 1, pct: 65), 100)
         XCTAssertEqual(maxes.weight(lift: .dead, cycle: 1, pct: 85), 190)
     }
 
     func testWeightFormulaAddsPerCycle() {
-        // Cycle 2 TMs: squat 195, bench 160, dead 235.
-        XCTAssertEqual(maxes.weight(lift: .squat, cycle: 2, pct: 100), 195)
+        // Cycle 2 TMs: squat 145, bench 160, dead 235.
+        XCTAssertEqual(maxes.weight(lift: .squat, cycle: 2, pct: 100), 145)
         XCTAssertEqual(maxes.weight(lift: .bench, cycle: 2, pct: 100), 160)
         XCTAssertEqual(maxes.weight(lift: .dead, cycle: 2, pct: 100), 235)
-        // Cycle 4 TMs: squat 215, bench 170, dead 255.
-        XCTAssertEqual(maxes.weight(lift: .squat, cycle: 4, pct: 100), 215)
+        // Cycle 4 TMs: squat 165, bench 170, dead 255.
+        XCTAssertEqual(maxes.weight(lift: .squat, cycle: 4, pct: 100), 165)
         XCTAssertEqual(maxes.weight(lift: .bench, cycle: 4, pct: 100), 170)
         XCTAssertEqual(maxes.weight(lift: .dead, cycle: 4, pct: 100), 255)
     }
 
     func testWeightRoundsToNearestFive() {
-        // 185 * 0.65 = 120.25 -> 120; 225 * 0.75 = 168.75 -> 170.
+        // 135 * 0.65 = 87.75 -> 90; 225 * 0.75 = 168.75 -> 170.
         XCTAssertEqual(maxes.weight(lift: .squat, cycle: 1, pct: 65) % 5, 0)
         for day in days {
             for entry in day.entries {
@@ -154,7 +154,7 @@ final class TrainingPlanTests: XCTestCase {
     }
 
     func testBaseForLift() {
-        XCTAssertEqual(maxes.base(for: .squat), 185)
+        XCTAssertEqual(maxes.base(for: .squat), 135)
         XCTAssertEqual(maxes.base(for: .bench), 155)
         XCTAssertEqual(maxes.base(for: .dead), 225)
     }
@@ -162,7 +162,7 @@ final class TrainingPlanTests: XCTestCase {
     func testWeightDisplay() {
         XCTAssertEqual(maxes.display(for: .none), "—")
         XCTAssertEqual(maxes.display(for: .percent(lift: .squat, cycle: 1, pct: 65)),
-                       "120 lb")
+                       "90 lb")
     }
 
     // MARK: - Default index (which day to show on open)

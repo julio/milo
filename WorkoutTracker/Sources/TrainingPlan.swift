@@ -53,7 +53,7 @@ struct TrainingMaxes: Equatable {
     var dead: Double
 
     static let cycleAdd: [Lift: Double] = [.squat: 10, .bench: 5, .dead: 10]
-    static let standard = TrainingMaxes(squat: 185, bench: 155, dead: 225)
+    static let standard = TrainingMaxes(squat: 135, bench: 155, dead: 225)
 
     func base(for lift: Lift) -> Double {
         switch lift {
