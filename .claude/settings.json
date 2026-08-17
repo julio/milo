@@ -25,7 +25,12 @@
       "Bash(tail *)",
       "Bash(grep *)",
       "Bash(awk *)",
-      "Bash(which *)"
+      "Bash(which *)",
+      "Bash(security *)",
+      "Bash(defaults *)",
+      "Bash(cd *)",
+      "Bash(for *)",
+      "Bash(ls*)"
     ]
   }
 }
