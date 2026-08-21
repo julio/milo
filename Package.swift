@@ -13,7 +13,6 @@ let package = Package(
             path: "WorkoutTracker/Sources",
             exclude: [
                 "WorkoutTrackerApp.swift",
-                "ContentView.swift",
                 "MainView.swift",
                 "CalendarView.swift",
                 "TodayView.swift",

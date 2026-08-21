@@ -11,17 +11,12 @@ struct MainView: View {
                 .tabItem {
                     Label("Calendar", systemImage: "calendar")
                 }
-            ContentView()
-                .tabItem {
-                    Label("Log", systemImage: "list.bullet")
-                }
         }
     }
 }
 
 #Preview {
     MainView()
-        .environmentObject(WorkoutStore())
         .environmentObject(CompletionStore())
         .environmentObject(StretchStore())
         .environmentObject(RenameStore())
