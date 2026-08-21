@@ -84,6 +84,11 @@ struct TodayView: View {
                 }
                 .padding()
             }
+            .scrollDismissesKeyboard(.immediately)
+            .onTapGesture {
+                UIApplication.shared.sendAction(
+                    #selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+            }
             .navigationTitle("Today")
             .navigationBarTitleDisplayMode(.inline)
             .safeAreaInset(edge: .bottom) {
@@ -217,6 +222,7 @@ struct EditableName: View {
                 .font(font)
                 .focused($focused)
                 .onSubmit {
+                    focused = false
                     isEditing = false
                     onRename(draft)
                 }
