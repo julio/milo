@@ -5,11 +5,11 @@
       "name" : "MiloCore",
       "path" : "/Users/julio/code/personal/milo",
       "projects" : [
-        "5c8d51a58e6267c6ed313c7614762adf04dd1909c918e3eecd327aa844f16280",
+        "b0d74227f2ee93bf5ee27f16758b64474e33ff4073319c4f7a39509a54afdc44",
         "ae1fa95baf01524afe22cc263e4d14226a2ca21b22bfbdbb938d550709d6b4e5"
       ]
     },
-    "signature" : "4fbd79abc62af4ca811f370f921ce03bd24076c701f881a1fc53ab660fb4d46a",
+    "signature" : "053878dee3a93bc6bbebaaf18f9d793cab58b312d2b8d6e951e0586a2a9d5349",
     "type" : "workspace"
   },
   {
@@ -215,14 +215,6 @@
               {
                 "fileType" : "sourcecode.swift",
                 "guid" : "PACKAGE:milo::MAINGROUP::REF_2::REF_1",
-                "name" : "ModelsTests.swift",
-                "path" : "ModelsTests.swift",
-                "sourceTree" : "<group>",
-                "type" : "file"
-              },
-              {
-                "fileType" : "sourcecode.swift",
-                "guid" : "PACKAGE:milo::MAINGROUP::REF_2::REF_2",
                 "name" : "RenamesTests.swift",
                 "path" : "RenamesTests.swift",
                 "sourceTree" : "<group>",
@@ -230,7 +222,7 @@
               },
               {
                 "fileType" : "sourcecode.swift",
-                "guid" : "PACKAGE:milo::MAINGROUP::REF_2::REF_3",
+                "guid" : "PACKAGE:milo::MAINGROUP::REF_2::REF_2",
                 "name" : "StretchesTests.swift",
                 "path" : "StretchesTests.swift",
                 "sourceTree" : "<group>",
@@ -238,7 +230,7 @@
               },
               {
                 "fileType" : "sourcecode.swift",
-                "guid" : "PACKAGE:milo::MAINGROUP::REF_2::REF_4",
+                "guid" : "PACKAGE:milo::MAINGROUP::REF_2::REF_3",
                 "name" : "SupabaseBackendTests.swift",
                 "path" : "SupabaseBackendTests.swift",
                 "sourceTree" : "<group>",
@@ -246,17 +238,9 @@
               },
               {
                 "fileType" : "sourcecode.swift",
-                "guid" : "PACKAGE:milo::MAINGROUP::REF_2::REF_5",
+                "guid" : "PACKAGE:milo::MAINGROUP::REF_2::REF_4",
                 "name" : "TrainingPlanTests.swift",
                 "path" : "TrainingPlanTests.swift",
-                "sourceTree" : "<group>",
-                "type" : "file"
-              },
-              {
-                "fileType" : "sourcecode.swift",
-                "guid" : "PACKAGE:milo::MAINGROUP::REF_2::REF_6",
-                "name" : "WorkoutStoreTests.swift",
-                "path" : "WorkoutStoreTests.swift",
                 "sourceTree" : "<group>",
                 "type" : "file"
               }
@@ -280,14 +264,6 @@
               {
                 "fileType" : "sourcecode.swift",
                 "guid" : "PACKAGE:milo::MAINGROUP::REF_3::REF_1",
-                "name" : "Models.swift",
-                "path" : "Models.swift",
-                "sourceTree" : "<group>",
-                "type" : "file"
-              },
-              {
-                "fileType" : "sourcecode.swift",
-                "guid" : "PACKAGE:milo::MAINGROUP::REF_3::REF_2",
                 "name" : "Renames.swift",
                 "path" : "Renames.swift",
                 "sourceTree" : "<group>",
@@ -295,7 +271,7 @@
               },
               {
                 "fileType" : "sourcecode.swift",
-                "guid" : "PACKAGE:milo::MAINGROUP::REF_3::REF_3",
+                "guid" : "PACKAGE:milo::MAINGROUP::REF_3::REF_2",
                 "name" : "Stretches.swift",
                 "path" : "Stretches.swift",
                 "sourceTree" : "<group>",
@@ -303,7 +279,7 @@
               },
               {
                 "fileType" : "sourcecode.swift",
-                "guid" : "PACKAGE:milo::MAINGROUP::REF_3::REF_4",
+                "guid" : "PACKAGE:milo::MAINGROUP::REF_3::REF_3",
                 "name" : "SupabaseBackend.swift",
                 "path" : "SupabaseBackend.swift",
                 "sourceTree" : "<group>",
@@ -311,7 +287,7 @@
               },
               {
                 "fileType" : "sourcecode.swift",
-                "guid" : "PACKAGE:milo::MAINGROUP::REF_3::REF_5",
+                "guid" : "PACKAGE:milo::MAINGROUP::REF_3::REF_4",
                 "name" : "TrainingPlan.swift",
                 "path" : "TrainingPlan.swift",
                 "sourceTree" : "<group>",
@@ -319,17 +295,9 @@
               },
               {
                 "fileType" : "sourcecode.swift",
-                "guid" : "PACKAGE:milo::MAINGROUP::REF_3::REF_6",
+                "guid" : "PACKAGE:milo::MAINGROUP::REF_3::REF_5",
                 "name" : "TrainingPlanData.swift",
                 "path" : "TrainingPlanData.swift",
-                "sourceTree" : "<group>",
-                "type" : "file"
-              },
-              {
-                "fileType" : "sourcecode.swift",
-                "guid" : "PACKAGE:milo::MAINGROUP::REF_3::REF_7",
-                "name" : "WorkoutStore.swift",
-                "path" : "WorkoutStore.swift",
                 "sourceTree" : "<group>",
                 "type" : "file"
               }
@@ -353,14 +321,6 @@
               {
                 "fileType" : "sourcecode.swift",
                 "guid" : "PACKAGE:milo::MAINGROUP::REF_4::REF_1",
-                "name" : "Models.swift",
-                "path" : "Models.swift",
-                "sourceTree" : "<group>",
-                "type" : "file"
-              },
-              {
-                "fileType" : "sourcecode.swift",
-                "guid" : "PACKAGE:milo::MAINGROUP::REF_4::REF_2",
                 "name" : "Renames.swift",
                 "path" : "Renames.swift",
                 "sourceTree" : "<group>",
@@ -368,7 +328,7 @@
               },
               {
                 "fileType" : "sourcecode.swift",
-                "guid" : "PACKAGE:milo::MAINGROUP::REF_4::REF_3",
+                "guid" : "PACKAGE:milo::MAINGROUP::REF_4::REF_2",
                 "name" : "Stretches.swift",
                 "path" : "Stretches.swift",
                 "sourceTree" : "<group>",
@@ -376,7 +336,7 @@
               },
               {
                 "fileType" : "sourcecode.swift",
-                "guid" : "PACKAGE:milo::MAINGROUP::REF_4::REF_4",
+                "guid" : "PACKAGE:milo::MAINGROUP::REF_4::REF_3",
                 "name" : "SupabaseBackend.swift",
                 "path" : "SupabaseBackend.swift",
                 "sourceTree" : "<group>",
@@ -384,7 +344,7 @@
               },
               {
                 "fileType" : "sourcecode.swift",
-                "guid" : "PACKAGE:milo::MAINGROUP::REF_4::REF_5",
+                "guid" : "PACKAGE:milo::MAINGROUP::REF_4::REF_4",
                 "name" : "TrainingPlan.swift",
                 "path" : "TrainingPlan.swift",
                 "sourceTree" : "<group>",
@@ -392,17 +352,9 @@
               },
               {
                 "fileType" : "sourcecode.swift",
-                "guid" : "PACKAGE:milo::MAINGROUP::REF_4::REF_6",
+                "guid" : "PACKAGE:milo::MAINGROUP::REF_4::REF_5",
                 "name" : "TrainingPlanData.swift",
                 "path" : "TrainingPlanData.swift",
-                "sourceTree" : "<group>",
-                "type" : "file"
-              },
-              {
-                "fileType" : "sourcecode.swift",
-                "guid" : "PACKAGE:milo::MAINGROUP::REF_4::REF_7",
-                "name" : "WorkoutStore.swift",
-                "path" : "WorkoutStore.swift",
                 "sourceTree" : "<group>",
                 "type" : "file"
               }
@@ -426,14 +378,14 @@
       "projectIsPackage" : "true",
       "projectName" : "MiloCore",
       "targets" : [
-        "ffdba0824c8f5eecfd22b2554154367d1f7b4638661f441e444599824a7411e2",
+        "e34c33ac6c54a777a30d4380d1f2edeb40aec6d3cf78a8e5754fb3f72b20c341",
         "d2fde6ab46674ef90ce35674a7e982da1e66d4aad584e625473c977432335438",
-        "a315e187affbb2c955ee446539abfaac14bfa8337c909cbb3ffa03b99c97eb4f",
-        "0a706b6147f0fe68eba2d2c0148c9d937f74fa4a67bd732bff7a7b8d10714083",
+        "95099632492392e6f8ced838132994ce5b57a3b25ccc75561ea9d213280c88df",
+        "2035d93fdbc0ec8e3dd1945d5f21c6ffe5029edd795a34f37b0905e457158700",
         "1e8a48aca30b716f39551320089822d266758b896d04e26ead9d4cf57eeb4527"
       ]
     },
-    "signature" : "5c8d51a58e6267c6ed313c7614762adf04dd1909c918e3eecd327aa844f16280",
+    "signature" : "b0d74227f2ee93bf5ee27f16758b64474e33ff4073319c4f7a39509a54afdc44",
     "type" : "project"
   },
   {
@@ -586,24 +538,6 @@
 
               ],
               "removeHeadersOnCopy" : "false"
-            },
-            {
-              "codeSignOnCopy" : "false",
-              "fileReference" : "PACKAGE:milo::MAINGROUP::REF_2::REF_5",
-              "guid" : "PACKAGE-PRODUCT:milo_WorkoutTrackerTests.WorkoutTrackerTests::BUILDPHASE_0::5",
-              "platformFilters" : [
-
-              ],
-              "removeHeadersOnCopy" : "false"
-            },
-            {
-              "codeSignOnCopy" : "false",
-              "fileReference" : "PACKAGE:milo::MAINGROUP::REF_2::REF_6",
-              "guid" : "PACKAGE-PRODUCT:milo_WorkoutTrackerTests.WorkoutTrackerTests::BUILDPHASE_0::6",
-              "platformFilters" : [
-
-              ],
-              "removeHeadersOnCopy" : "false"
             }
           ],
           "guid" : "PACKAGE-PRODUCT:milo_WorkoutTrackerTests.WorkoutTrackerTests::BUILDPHASE_0",
@@ -647,7 +581,7 @@
       "productTypeIdentifier" : "com.apple.product-type.bundle.unit-test",
       "type" : "standard"
     },
-    "signature" : "ffdba0824c8f5eecfd22b2554154367d1f7b4638661f441e444599824a7411e2",
+    "signature" : "e34c33ac6c54a777a30d4380d1f2edeb40aec6d3cf78a8e5754fb3f72b20c341",
     "type" : "target"
   },
   {
@@ -930,24 +864,6 @@
 
               ],
               "removeHeadersOnCopy" : "false"
-            },
-            {
-              "codeSignOnCopy" : "false",
-              "fileReference" : "PACKAGE:milo::MAINGROUP::REF_3::REF_6",
-              "guid" : "PACKAGE-TARGET:WorkoutTracker::BUILDPHASE_0::6",
-              "platformFilters" : [
-
-              ],
-              "removeHeadersOnCopy" : "false"
-            },
-            {
-              "codeSignOnCopy" : "false",
-              "fileReference" : "PACKAGE:milo::MAINGROUP::REF_3::REF_7",
-              "guid" : "PACKAGE-TARGET:WorkoutTracker::BUILDPHASE_0::7",
-              "platformFilters" : [
-
-              ],
-              "removeHeadersOnCopy" : "false"
             }
           ],
           "guid" : "PACKAGE-TARGET:WorkoutTracker::BUILDPHASE_0",
@@ -974,7 +890,7 @@
       "productTypeIdentifier" : "org.swift.product-type.library.static",
       "type" : "standard"
     },
-    "signature" : "a315e187affbb2c955ee446539abfaac14bfa8337c909cbb3ffa03b99c97eb4f",
+    "signature" : "95099632492392e6f8ced838132994ce5b57a3b25ccc75561ea9d213280c88df",
     "type" : "target"
   },
   {
@@ -1195,24 +1111,6 @@
 
               ],
               "removeHeadersOnCopy" : "false"
-            },
-            {
-              "codeSignOnCopy" : "false",
-              "fileReference" : "PACKAGE:milo::MAINGROUP::REF_4::REF_6",
-              "guid" : "PACKAGE-TARGET:WorkoutTracker--F8500EAA5D76E2B-dynamic::BUILDPHASE_0::6",
-              "platformFilters" : [
-
-              ],
-              "removeHeadersOnCopy" : "false"
-            },
-            {
-              "codeSignOnCopy" : "false",
-              "fileReference" : "PACKAGE:milo::MAINGROUP::REF_4::REF_7",
-              "guid" : "PACKAGE-TARGET:WorkoutTracker--F8500EAA5D76E2B-dynamic::BUILDPHASE_0::7",
-              "platformFilters" : [
-
-              ],
-              "removeHeadersOnCopy" : "false"
             }
           ],
           "guid" : "PACKAGE-TARGET:WorkoutTracker--F8500EAA5D76E2B-dynamic::BUILDPHASE_0",
@@ -1238,7 +1136,7 @@
       "productTypeIdentifier" : "com.apple.product-type.library.dynamic",
       "type" : "standard"
     },
-    "signature" : "0a706b6147f0fe68eba2d2c0148c9d937f74fa4a67bd732bff7a7b8d10714083",
+    "signature" : "2035d93fdbc0ec8e3dd1945d5f21c6ffe5029edd795a34f37b0905e457158700",
     "type" : "target"
   },
   {
