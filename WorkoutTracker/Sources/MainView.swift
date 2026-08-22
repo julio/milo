@@ -7,6 +7,10 @@ struct MainView: View {
                 .tabItem {
                     Label("Today", systemImage: "checklist")
                 }
+            ProgressTabView()
+                .tabItem {
+                    Label("Progress", systemImage: "chart.line.uptrend.xyaxis")
+                }
             CalendarView()
                 .tabItem {
                     Label("Calendar", systemImage: "calendar")
@@ -20,4 +24,5 @@ struct MainView: View {
         .environmentObject(CompletionStore())
         .environmentObject(StretchStore())
         .environmentObject(RenameStore())
+        .environmentObject(LogStore())
 }

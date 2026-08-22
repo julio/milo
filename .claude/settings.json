@@ -30,7 +30,9 @@
       "Bash(defaults *)",
       "Bash(cd *)",
       "Bash(for *)",
-      "Bash(ls*)"
+      "Bash(ls*)",
+      "Edit",
+      "Write"
     ]
   }
 }

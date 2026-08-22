@@ -1,0 +1,47 @@
+{
+  "": {
+    "swift-dependencies": "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTracker.build/primary.swiftdeps"
+  },
+  "/Users/julio/code/personal/milo/WorkoutTracker/Sources/Completions.swift": {
+    "dependencies": "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTracker.build/Completions.d",
+    "object": "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTracker.build/Completions.swift.o",
+    "swiftmodule": "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTracker.build/Completions~partial.swiftmodule",
+    "swift-dependencies": "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTracker.build/Completions.swiftdeps",
+    "diagnostics": "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTracker.build/Completions.dia"  },
+  "/Users/julio/code/personal/milo/WorkoutTracker/Sources/Logs.swift": {
+    "dependencies": "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTracker.build/Logs.d",
+    "object": "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTracker.build/Logs.swift.o",
+    "swiftmodule": "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTracker.build/Logs~partial.swiftmodule",
+    "swift-dependencies": "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTracker.build/Logs.swiftdeps",
+    "diagnostics": "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTracker.build/Logs.dia"  },
+  "/Users/julio/code/personal/milo/WorkoutTracker/Sources/Renames.swift": {
+    "dependencies": "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTracker.build/Renames.d",
+    "object": "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTracker.build/Renames.swift.o",
+    "swiftmodule": "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTracker.build/Renames~partial.swiftmodule",
+    "swift-dependencies": "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTracker.build/Renames.swiftdeps",
+    "diagnostics": "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTracker.build/Renames.dia"  },
+  "/Users/julio/code/personal/milo/WorkoutTracker/Sources/Stretches.swift": {
+    "dependencies": "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTracker.build/Stretches.d",
+    "object": "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTracker.build/Stretches.swift.o",
+    "swiftmodule": "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTracker.build/Stretches~partial.swiftmodule",
+    "swift-dependencies": "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTracker.build/Stretches.swiftdeps",
+    "diagnostics": "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTracker.build/Stretches.dia"  },
+  "/Users/julio/code/personal/milo/WorkoutTracker/Sources/SupabaseBackend.swift": {
+    "dependencies": "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTracker.build/SupabaseBackend.d",
+    "object": "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTracker.build/SupabaseBackend.swift.o",
+    "swiftmodule": "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTracker.build/SupabaseBackend~partial.swiftmodule",
+    "swift-dependencies": "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTracker.build/SupabaseBackend.swiftdeps",
+    "diagnostics": "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTracker.build/SupabaseBackend.dia"  },
+  "/Users/julio/code/personal/milo/WorkoutTracker/Sources/TrainingPlan.swift": {
+    "dependencies": "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTracker.build/TrainingPlan.d",
+    "object": "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTracker.build/TrainingPlan.swift.o",
+    "swiftmodule": "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTracker.build/TrainingPlan~partial.swiftmodule",
+    "swift-dependencies": "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTracker.build/TrainingPlan.swiftdeps",
+    "diagnostics": "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTracker.build/TrainingPlan.dia"  },
+  "/Users/julio/code/personal/milo/WorkoutTracker/Sources/TrainingPlanData.swift": {
+    "dependencies": "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTracker.build/TrainingPlanData.d",
+    "object": "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTracker.build/TrainingPlanData.swift.o",
+    "swiftmodule": "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTracker.build/TrainingPlanData~partial.swiftmodule",
+    "swift-dependencies": "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTracker.build/TrainingPlanData.swiftdeps",
+    "diagnostics": "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTracker.build/TrainingPlanData.dia"  }
+}

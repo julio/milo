@@ -8,6 +8,7 @@ struct WorkoutTrackerApp: App {
                 .environmentObject(CompletionStore())
                 .environmentObject(StretchStore())
                 .environmentObject(RenameStore())
+                .environmentObject(LogStore())
         }
     }
 }

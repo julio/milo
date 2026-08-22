@@ -16,6 +16,7 @@ let package = Package(
                 "MainView.swift",
                 "CalendarView.swift",
                 "TodayView.swift",
+                "ProgressTabView.swift",
             ]
         ),
         .testTarget(

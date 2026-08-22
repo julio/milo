@@ -1,0 +1,11 @@
+{
+  "": {
+    "swift-dependencies": "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/MiloCorePackageTests.build/primary.swiftdeps"
+  },
+  "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/MiloCorePackageTests.derived/runner.swift": {
+    "dependencies": "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/MiloCorePackageTests.build/runner.d",
+    "object": "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/MiloCorePackageTests.build/runner.swift.o",
+    "swiftmodule": "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/MiloCorePackageTests.build/runner~partial.swiftmodule",
+    "swift-dependencies": "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/MiloCorePackageTests.build/runner.swiftdeps",
+    "diagnostics": "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/MiloCorePackageTests.build/runner.dia"  }
+}

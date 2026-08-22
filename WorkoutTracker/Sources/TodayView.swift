@@ -6,6 +6,7 @@ struct TodayView: View {
     @EnvironmentObject var completionStore: CompletionStore
     @EnvironmentObject var stretchStore: StretchStore
     @EnvironmentObject var renameStore: RenameStore
+    @EnvironmentObject var logStore: LogStore
     @State private var selectedDate = Date()
 
     private let maxes = TrainingMaxes.standard
@@ -46,6 +47,14 @@ struct TodayView: View {
                                     onRename: { newName in
                                         Task {
                                             await renameStore.rename(original: entry.exercise, to: newName)
+                                        }
+                                    },
+                                    log: logStore.log(dayId: day.id, entryIndex: index),
+                                    onLog: { weight, reps in
+                                        Task {
+                                            await logStore.save(
+                                                dayId: day.id, entryIndex: index,
+                                                weight: weight, reps: reps)
                                         }
                                     })
                             }
@@ -98,11 +107,23 @@ struct TodayView: View {
                 await completionStore.refresh()
                 await stretchStore.refresh()
                 await renameStore.refresh()
+                await logStore.refresh()
             }
             .refreshable {
                 await completionStore.refresh()
                 await stretchStore.refresh()
                 await renameStore.refresh()
+                await logStore.refresh()
+            }
+            .toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+                    Button("Done") {
+                        UIApplication.shared.sendAction(
+                            #selector(UIResponder.resignFirstResponder),
+                            to: nil, from: nil, for: nil)
+                    }
+                }
             }
         }
     }
@@ -150,7 +171,7 @@ struct TodayView: View {
     @ViewBuilder
     private var errorBanners: some View {
         ForEach([completionStore.errorMessage, stretchStore.errorMessage,
-                 renameStore.errorMessage].compactMap { $0 },
+                 renameStore.errorMessage, logStore.errorMessage].compactMap { $0 },
                 id: \.self) { message in
             Text(message)
                 .font(.caption)
@@ -248,6 +269,8 @@ struct PlanEntryRow: View {
     let isDone: Bool
     let onToggle: () -> Void
     let onRename: (String) -> Void
+    let log: ExerciseLog?
+    let onLog: (Double?, Int?) -> Void
 
     var body: some View {
         HStack(spacing: 12) {
@@ -277,6 +300,9 @@ struct PlanEntryRow: View {
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
+                if !entry.isSkipped {
+                    LogFields(log: log, onLog: onLog)
+                }
             }
         }
         .padding(12)
@@ -289,6 +315,54 @@ struct PlanEntryRow: View {
                 onToggle()
             }
         }
+    }
+}
+
+/// Inline capture of what was actually lifted. Commits when focus leaves the
+/// fields; clearing both deletes the log.
+struct LogFields: View {
+    let log: ExerciseLog?
+    let onLog: (Double?, Int?) -> Void
+
+    @State private var weightText = ""
+    @State private var repsText = ""
+    @FocusState private var focusedField: Field?
+
+    enum Field { case weight, reps }
+
+    var body: some View {
+        HStack(spacing: 6) {
+            Image(systemName: "chart.line.uptrend.xyaxis")
+                .font(.caption2)
+                .foregroundStyle(.tertiary)
+            TextField("lb", text: $weightText)
+                .keyboardType(.decimalPad)
+                .focused($focusedField, equals: .weight)
+                .frame(width: 56)
+            TextField("reps", text: $repsText)
+                .keyboardType(.numberPad)
+                .focused($focusedField, equals: .reps)
+                .frame(width: 48)
+            Spacer()
+        }
+        .font(.caption)
+        .textFieldStyle(.roundedBorder)
+        .onAppear(perform: load)
+        .onChange(of: log) { _, _ in load() }
+        .onChange(of: focusedField) { _, nowFocused in
+            if nowFocused == nil { commit() }
+        }
+        // Swallow taps between the fields so they don't toggle the row done.
+        .onTapGesture {}
+    }
+
+    private func load() {
+        weightText = LogStore.weightText(log?.weight ?? nil)
+        repsText = LogStore.repsText(log?.reps ?? nil)
+    }
+
+    private func commit() {
+        onLog(LogStore.parseWeight(weightText), LogStore.parseReps(repsText))
     }
 }
 
@@ -321,4 +395,5 @@ struct StretchRow: View {
         .environmentObject(CompletionStore())
         .environmentObject(StretchStore())
         .environmentObject(RenameStore())
+        .environmentObject(LogStore())
 }

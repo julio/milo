@@ -131,6 +131,29 @@ extension SupabaseBackend: StretchBackend {
     }
 }
 
+extension SupabaseBackend: LogBackend {
+    func fetchLogs() async throws -> [ExerciseLog] {
+        let data = try await send(request(
+            path: "exercise_logs", query: "select=day_id,entry_index,weight,reps",
+            method: "GET"))
+        return try JSONDecoder().decode([ExerciseLog].self, from: data)
+    }
+
+    func upsertLog(_ log: ExerciseLog) async throws {
+        try await send(request(
+            path: "exercise_logs", method: "POST",
+            body: try JSONEncoder().encode(log),
+            prefer: "resolution=merge-duplicates"))
+    }
+
+    func deleteLog(dayId: Int, entryIndex: Int) async throws {
+        try await send(request(
+            path: "exercise_logs",
+            query: "day_id=eq.\(dayId)&entry_index=eq.\(entryIndex)",
+            method: "DELETE"))
+    }
+}
+
 extension SupabaseBackend: RenameBackend {
     func fetchRenames() async throws -> [ExerciseRename] {
         let data = try await send(request(

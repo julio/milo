@@ -36,6 +36,13 @@
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
+		<key>BuildFile_Logs</key>
+		<dict>
+			<key>fileRef</key>
+			<string>File_Logs</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
 		<key>BuildFile_MainView</key>
 		<dict>
 			<key>fileRef</key>
@@ -54,6 +61,20 @@
 		<dict>
 			<key>fileRef</key>
 			<string>File_PlanData</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>BuildFile_Progress</key>
+		<dict>
+			<key>fileRef</key>
+			<string>File_Progress</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>BuildFile_ProgressTab</key>
+		<dict>
+			<key>fileRef</key>
+			<string>File_ProgressTab</string>
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
@@ -129,6 +150,17 @@
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
+		<key>File_Logs</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.swift</string>
+			<key>path</key>
+			<string>Logs.swift</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
 		<key>File_MainView</key>
 		<dict>
 			<key>isa</key>
@@ -172,6 +204,28 @@
 			<string>WorkoutTracker/Info.plist</string>
 			<key>sourceTree</key>
 			<string>SOURCE_ROOT</string>
+		</dict>
+		<key>File_Progress</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.swift</string>
+			<key>path</key>
+			<string>Progress.swift</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>File_ProgressTab</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.swift</string>
+			<key>path</key>
+			<string>ProgressTabView.swift</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
 		</dict>
 		<key>File_Renames</key>
 		<dict>
@@ -246,6 +300,9 @@
 				<string>BuildFile_Stretches</string>
 				<string>BuildFile_TodayView</string>
 				<string>BuildFile_Renames</string>
+				<string>BuildFile_Logs</string>
+				<string>BuildFile_Progress</string>
+				<string>BuildFile_ProgressTab</string>
 			</array>
 			<key>isa</key>
 			<string>PBXSourcesBuildPhase</string>
@@ -321,6 +378,9 @@
 				<string>File_Stretches</string>
 				<string>File_TodayView</string>
 				<string>File_Renames</string>
+				<string>File_Logs</string>
+				<string>File_Progress</string>
+				<string>File_ProgressTab</string>
 			</array>
 			<key>isa</key>
 			<string>PBXGroup</string>

@@ -1,0 +1,88 @@
+client:
+  name: basic
+  file-system: device-agnostic
+tools: {}
+targets:
+  "MiloCorePackageTests-arm64-apple-macosx-debug.module": ["<MiloCorePackageTests-arm64-apple-macosx-debug.module>"]
+  "PackageStructure": ["<PackageStructure>"]
+  "WorkoutTracker-arm64-apple-macosx-debug.module": ["<WorkoutTracker-arm64-apple-macosx-debug.module>"]
+  "WorkoutTrackerTests-arm64-apple-macosx-debug.module": ["<WorkoutTrackerTests-arm64-apple-macosx-debug.module>"]
+  "main": ["<WorkoutTracker-arm64-apple-macosx-debug.module>"]
+  "test": ["<WorkoutTracker-arm64-apple-macosx-debug.module>","<WorkoutTrackerTests-arm64-apple-macosx-debug.module>"]
+default: "main"
+nodes:
+  "/Users/julio/code/personal/milo/WorkoutTracker/Sources/":
+    is-directory-structure: true
+    content-exclusion-patterns: [".git",".build"]
+  "/Users/julio/code/personal/milo/WorkoutTracker/Tests/":
+    is-directory-structure: true
+    content-exclusion-patterns: [".git",".build"]
+commands:
+  "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/MiloCorePackageTests.build/sources":
+    tool: write-auxiliary-file
+    inputs: ["<sources-file-list>","/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/MiloCorePackageTests.derived/runner.swift"]
+    outputs: ["/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/MiloCorePackageTests.build/sources"]
+    description: "Write auxiliary file /Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/MiloCorePackageTests.build/sources"
+
+  "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTracker.build/sources":
+    tool: write-auxiliary-file
+    inputs: ["<sources-file-list>","/Users/julio/code/personal/milo/WorkoutTracker/Sources/Completions.swift","/Users/julio/code/personal/milo/WorkoutTracker/Sources/Logs.swift","/Users/julio/code/personal/milo/WorkoutTracker/Sources/Renames.swift","/Users/julio/code/personal/milo/WorkoutTracker/Sources/Stretches.swift","/Users/julio/code/personal/milo/WorkoutTracker/Sources/SupabaseBackend.swift","/Users/julio/code/personal/milo/WorkoutTracker/Sources/TrainingPlan.swift","/Users/julio/code/personal/milo/WorkoutTracker/Sources/TrainingPlanData.swift"]
+    outputs: ["/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTracker.build/sources"]
+    description: "Write auxiliary file /Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTracker.build/sources"
+
+  "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTrackerTests.build/sources":
+    tool: write-auxiliary-file
+    inputs: ["<sources-file-list>","/Users/julio/code/personal/milo/WorkoutTracker/Tests/CompletionsTests.swift","/Users/julio/code/personal/milo/WorkoutTracker/Tests/RenamesTests.swift","/Users/julio/code/personal/milo/WorkoutTracker/Tests/StretchesTests.swift","/Users/julio/code/personal/milo/WorkoutTracker/Tests/SupabaseBackendTests.swift","/Users/julio/code/personal/milo/WorkoutTracker/Tests/TrainingPlanTests.swift"]
+    outputs: ["/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTrackerTests.build/sources"]
+    description: "Write auxiliary file /Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTrackerTests.build/sources"
+
+  "/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/swift-version-39B54973F684ADAB.txt":
+    tool: write-auxiliary-file
+    inputs: ["<swift-get-version>","/Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"]
+    outputs: ["/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/swift-version-39B54973F684ADAB.txt"]
+    always-out-of-date: "true"
+    description: "Write auxiliary file /Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/swift-version-39B54973F684ADAB.txt"
+
+  "<MiloCorePackageTests-arm64-apple-macosx-debug.module>":
+    tool: phony
+    inputs: ["/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/Modules/MiloCorePackageTests.swiftmodule"]
+    outputs: ["<MiloCorePackageTests-arm64-apple-macosx-debug.module>"]
+
+  "<WorkoutTracker-arm64-apple-macosx-debug.module>":
+    tool: phony
+    inputs: ["/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/Modules/WorkoutTracker.swiftmodule"]
+    outputs: ["<WorkoutTracker-arm64-apple-macosx-debug.module>"]
+
+  "<WorkoutTrackerTests-arm64-apple-macosx-debug.module>":
+    tool: phony
+    inputs: ["/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/Modules/WorkoutTrackerTests.swiftmodule"]
+    outputs: ["<WorkoutTrackerTests-arm64-apple-macosx-debug.module>"]
+
+  "C.MiloCorePackageTests-arm64-apple-macosx-debug.module":
+    tool: shell
+    inputs: ["/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/MiloCorePackageTests.derived/runner.swift","/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/swift-version-39B54973F684ADAB.txt","/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/Modules/WorkoutTrackerTests.swiftmodule","/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/MiloCorePackageTests.build/sources"]
+    outputs: ["/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/Modules/MiloCorePackageTests.swiftmodule"]
+    description: "Compiling Swift Module 'MiloCorePackageTests' (1 sources)"
+    args: ["/Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc","-module-name","MiloCorePackageTests","-emit-dependencies","-emit-module","-emit-module-path","/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/Modules/MiloCorePackageTests.swiftmodule","-output-file-map","/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/MiloCorePackageTests.build/output-file-map.json","-parse-as-library","-incremental","@/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/MiloCorePackageTests.build/sources","-I","/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/Modules","-target","arm64-apple-macosx13.0","-incremental","-enable-batch-mode","-serialize-diagnostics","-Onone","-enable-testing","-Xfrontend","-enable-cross-import-overlays","-j16","-DSWIFT_PACKAGE","-DDEBUG","-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE","-module-cache-path","/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/ModuleCache","-parseable-output","-parse-as-library","-emit-objc-header","-emit-objc-header-path","/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/MiloCorePackageTests.build/include/MiloCorePackageTests-Swift.h","-Xfrontend","-experimental-lazy-typecheck","-Xfrontend","-experimental-skip-all-function-bodies","-Xfrontend","-experimental-allow-module-with-compiler-errors","-Xfrontend","-empty-abi-descriptor","-plugin-path","/Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing","-sdk","/Applications/Xcode-beta.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX27.0.sdk","-F","/Applications/Xcode-beta.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks","-I","/Applications/Xcode-beta.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib","-L","/Applications/Xcode-beta.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib","-g","-Xcc","-isysroot","-Xcc","/Applications/Xcode-beta.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX27.0.sdk","-Xcc","-F","-Xcc","/Applications/Xcode-beta.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks","-Xcc","-fPIC","-Xcc","-g","-package-name","milo"]
+
+  "C.WorkoutTracker-arm64-apple-macosx-debug.module":
+    tool: shell
+    inputs: ["/Users/julio/code/personal/milo/WorkoutTracker/Sources/Completions.swift","/Users/julio/code/personal/milo/WorkoutTracker/Sources/Logs.swift","/Users/julio/code/personal/milo/WorkoutTracker/Sources/Renames.swift","/Users/julio/code/personal/milo/WorkoutTracker/Sources/Stretches.swift","/Users/julio/code/personal/milo/WorkoutTracker/Sources/SupabaseBackend.swift","/Users/julio/code/personal/milo/WorkoutTracker/Sources/TrainingPlan.swift","/Users/julio/code/personal/milo/WorkoutTracker/Sources/TrainingPlanData.swift","/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/swift-version-39B54973F684ADAB.txt","/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTracker.build/sources"]
+    outputs: ["/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/Modules/WorkoutTracker.swiftmodule"]
+    description: "Compiling Swift Module 'WorkoutTracker' (7 sources)"
+    args: ["/Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc","-module-name","WorkoutTracker","-emit-dependencies","-emit-module","-emit-module-path","/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/Modules/WorkoutTracker.swiftmodule","-output-file-map","/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTracker.build/output-file-map.json","-parse-as-library","-incremental","@/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTracker.build/sources","-I","/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/Modules","-target","arm64-apple-macosx13.0","-incremental","-enable-batch-mode","-serialize-diagnostics","-Onone","-enable-testing","-j16","-DSWIFT_PACKAGE","-DDEBUG","-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE","-module-cache-path","/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/ModuleCache","-parseable-output","-parse-as-library","-emit-objc-header","-emit-objc-header-path","/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTracker.build/include/WorkoutTracker-Swift.h","-swift-version","5","-Xfrontend","-experimental-lazy-typecheck","-Xfrontend","-experimental-skip-all-function-bodies","-Xfrontend","-experimental-allow-module-with-compiler-errors","-Xfrontend","-empty-abi-descriptor","-plugin-path","/Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing","-sdk","/Applications/Xcode-beta.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX27.0.sdk","-F","/Applications/Xcode-beta.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks","-I","/Applications/Xcode-beta.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib","-L","/Applications/Xcode-beta.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib","-g","-Xcc","-isysroot","-Xcc","/Applications/Xcode-beta.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX27.0.sdk","-Xcc","-F","-Xcc","/Applications/Xcode-beta.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks","-Xcc","-fPIC","-Xcc","-g","-package-name","milo"]
+
+  "C.WorkoutTrackerTests-arm64-apple-macosx-debug.module":
+    tool: shell
+    inputs: ["/Users/julio/code/personal/milo/WorkoutTracker/Tests/CompletionsTests.swift","/Users/julio/code/personal/milo/WorkoutTracker/Tests/RenamesTests.swift","/Users/julio/code/personal/milo/WorkoutTracker/Tests/StretchesTests.swift","/Users/julio/code/personal/milo/WorkoutTracker/Tests/SupabaseBackendTests.swift","/Users/julio/code/personal/milo/WorkoutTracker/Tests/TrainingPlanTests.swift","/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/swift-version-39B54973F684ADAB.txt","/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/Modules/WorkoutTracker.swiftmodule","/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTrackerTests.build/sources"]
+    outputs: ["/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/Modules/WorkoutTrackerTests.swiftmodule"]
+    description: "Compiling Swift Module 'WorkoutTrackerTests' (5 sources)"
+    args: ["/Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc","-module-name","WorkoutTrackerTests","-emit-dependencies","-emit-module","-emit-module-path","/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/Modules/WorkoutTrackerTests.swiftmodule","-output-file-map","/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTrackerTests.build/output-file-map.json","-parse-as-library","-incremental","@/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/WorkoutTrackerTests.build/sources","-I","/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/Modules","-target","arm64-apple-macosx14.0","-incremental","-enable-batch-mode","-serialize-diagnostics","-Onone","-enable-testing","-Xfrontend","-enable-cross-import-overlays","-j16","-DSWIFT_PACKAGE","-DDEBUG","-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE","-module-cache-path","/Users/julio/code/personal/milo/.build/index-build/arm64-apple-macosx/debug/ModuleCache","-parseable-output","-parse-as-library","-swift-version","5","-Xfrontend","-experimental-lazy-typecheck","-Xfrontend","-experimental-skip-all-function-bodies","-Xfrontend","-experimental-allow-module-with-compiler-errors","-Xfrontend","-empty-abi-descriptor","-plugin-path","/Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing","-sdk","/Applications/Xcode-beta.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX27.0.sdk","-F","/Applications/Xcode-beta.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks","-I","/Applications/Xcode-beta.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib","-L","/Applications/Xcode-beta.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib","-g","-Xcc","-isysroot","-Xcc","/Applications/Xcode-beta.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX27.0.sdk","-Xcc","-F","-Xcc","/Applications/Xcode-beta.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks","-Xcc","-fPIC","-Xcc","-g","-package-name","milo"]
+
+  "PackageStructure":
+    tool: package-structure-tool
+    inputs: ["/Users/julio/code/personal/milo/WorkoutTracker/Sources/","/Users/julio/code/personal/milo/WorkoutTracker/Tests/","/Users/julio/code/personal/milo/Package.swift","/Users/julio/code/personal/milo/Package.resolved"]
+    outputs: ["<PackageStructure>"]
+    description: "Planning build"
+    allow-missing-inputs: true
+
