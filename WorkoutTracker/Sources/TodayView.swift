@@ -34,9 +34,10 @@ struct TodayView: View {
                         sectionTitle("Workout", systemImage: "dumbbell.fill")
                         VStack(spacing: 10) {
                             ForEach(Array(day.entries.enumerated()), id: \.offset) { index, entry in
+                                let liftName = ProgressData.resolvedExercise(day: day, entryIndex: index)
                                 PlanEntryRow(
                                     entry: entry,
-                                    displayName: renameStore.displayName(for: entry.exercise),
+                                    displayName: renameStore.displayName(for: liftName),
                                     maxes: maxes,
                                     isDone: completionStore.isDone(dayId: day.id, entryIndex: index),
                                     onToggle: {
@@ -46,7 +47,7 @@ struct TodayView: View {
                                     },
                                     onRename: { newName in
                                         Task {
-                                            await renameStore.rename(original: entry.exercise, to: newName)
+                                            await renameStore.rename(original: liftName, to: newName)
                                         }
                                     },
                                     log: logStore.log(dayId: day.id, entryIndex: index),
@@ -301,7 +302,11 @@ struct PlanEntryRow: View {
                         .foregroundStyle(.secondary)
                 }
                 if !entry.isSkipped {
-                    LogFields(log: log, onLog: onLog)
+                    LogFields(
+                        log: log,
+                        plannedWeight: maxes.plannedWeight(for: entry.weight),
+                        plannedReps: entry.plannedReps,
+                        onLog: onLog)
                 }
             }
         }
@@ -318,10 +323,13 @@ struct PlanEntryRow: View {
     }
 }
 
-/// Inline capture of what was actually lifted. Commits when focus leaves the
-/// fields; clearing both deletes the log.
+/// Inline capture of what was actually lifted. Fields start prefilled with
+/// the plan's prescription; commits when focus leaves the fields; clearing
+/// both deletes the log.
 struct LogFields: View {
     let log: ExerciseLog?
+    let plannedWeight: Double?
+    let plannedReps: Int?
     let onLog: (Double?, Int?) -> Void
 
     @State private var weightText = ""
@@ -357,8 +365,13 @@ struct LogFields: View {
     }
 
     private func load() {
-        weightText = LogStore.weightText(log?.weight ?? nil)
-        repsText = LogStore.repsText(log?.reps ?? nil)
+        if let log {
+            weightText = LogStore.weightText(log.weight)
+            repsText = LogStore.repsText(log.reps)
+        } else {
+            weightText = LogStore.weightText(plannedWeight)
+            repsText = LogStore.repsText(plannedReps)
+        }
     }
 
     private func commit() {

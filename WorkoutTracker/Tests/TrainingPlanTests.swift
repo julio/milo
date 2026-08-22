@@ -206,4 +206,31 @@ final class TrainingPlanTests: XCTestCase {
         XCTAssertTrue(first.dateTitle.hasPrefix("Monday, "))
         XCTAssertTrue(first.dateTitle.contains("17"))
     }
+
+    // MARK: - Plan prescriptions (prefill the log fields)
+
+    private func entry(_ setsReps: String) -> PlanEntry {
+        PlanEntry(exercise: "X", setsReps: setsReps, weight: .none,
+                  note: "", isSkipped: false)
+    }
+
+    func testPlannedRepsFromRepColumn() {
+        XCTAssertEqual(entry("Set 1 — 5 reps").plannedReps, 5)
+        XCTAssertEqual(entry("3 x 10").plannedReps, 10)
+        XCTAssertEqual(entry("5 x 5").plannedReps, 5)
+        XCTAssertEqual(entry("3 x 45 sec").plannedReps, 45)
+        XCTAssertEqual(entry("3 x 40 m").plannedReps, 40)
+        XCTAssertNil(entry("5 min").plannedReps)
+        XCTAssertNil(entry("15–20 min").plannedReps)
+        XCTAssertNil(entry("reps galore").plannedReps)
+        XCTAssertNil(entry("x").plannedReps)
+    }
+
+    func testPlannedWeight() {
+        let maxes = TrainingMaxes.standard
+        XCTAssertNil(maxes.plannedWeight(for: .none))
+        // 65% of the 135 squat TM, rounded to 5s: 90.
+        XCTAssertEqual(maxes.plannedWeight(
+            for: .percent(lift: .squat, cycle: 1, pct: 65)), 90)
+    }
 }

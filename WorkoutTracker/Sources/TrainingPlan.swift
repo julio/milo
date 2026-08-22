@@ -15,6 +15,19 @@ struct PlanEntry: Equatable {
     let weight: WeightSpec
     let note: String
     let isSkipped: Bool
+
+    /// The per-set count the plan's rep column encodes: "Set 1 — 5 reps" → 5,
+    /// "3 x 10" → 10, "3 x 45 sec" → 45. Time-only rows ("5 min") have none.
+    var plannedReps: Int? {
+        let tokens = setsReps.split(separator: " ").map(String.init)
+        if let index = tokens.firstIndex(of: "reps"), index > 0 {
+            return Int(tokens[index - 1])
+        }
+        if let index = tokens.firstIndex(of: "x"), index + 1 < tokens.count {
+            return Int(tokens[index + 1])
+        }
+        return nil
+    }
 }
 
 struct PlanDay: Identifiable, Equatable {
@@ -66,6 +79,16 @@ struct TrainingMaxes: Equatable {
     func weight(lift: Lift, cycle: Int, pct: Double) -> Int {
         let tm = base(for: lift) + Double(cycle - 1) * Self.cycleAdd[lift]!
         return Int((tm * pct / 100 / 5).rounded()) * 5
+    }
+
+    /// The prescribed weight for a plan row, when it has one.
+    func plannedWeight(for spec: WeightSpec) -> Double? {
+        switch spec {
+        case .none:
+            return nil
+        case .percent(let lift, let cycle, let pct):
+            return Double(weight(lift: lift, cycle: cycle, pct: pct))
+        }
     }
 
     /// Display string for a plan entry's weight column ("145 lb" or "—").
