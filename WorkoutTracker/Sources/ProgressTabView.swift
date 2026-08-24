@@ -69,6 +69,15 @@ struct SeriesCard: View {
         return .secondary
     }
 
+    // Padded so a single logged day still spans several days — otherwise
+    // the automatic axis subdivides one day into hours.
+    private var xDomain: ClosedRange<Date> {
+        let calendar = Calendar.current
+        let first = calendar.date(byAdding: .day, value: -2, to: series.points.first!.date)!
+        let last = calendar.date(byAdding: .day, value: 2, to: series.points.last!.date)!
+        return first...last
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack(alignment: .firstTextBaseline) {
@@ -101,6 +110,13 @@ struct SeriesCard: View {
                         .symbolSize(40)
                 }
                 .foregroundStyle(Color.accentColor)
+            }
+            .chartXScale(domain: xDomain)
+            .chartXAxis {
+                AxisMarks(values: .automatic(desiredCount: 4)) { _ in
+                    AxisGridLine()
+                    AxisValueLabel(format: .dateTime.month(.defaultDigits).day())
+                }
             }
             .chartYScale(domain: .automatic(includesZero: false))
             .frame(height: 150)
