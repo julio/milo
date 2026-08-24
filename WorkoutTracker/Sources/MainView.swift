@@ -25,4 +25,5 @@ struct MainView: View {
         .environmentObject(StretchStore())
         .environmentObject(RenameStore())
         .environmentObject(LogStore())
+        .environmentObject(SyncEngine.shared)
 }

@@ -56,35 +56,48 @@ protocol StretchBackend: Sendable {
 @MainActor
 class StretchStore: ObservableObject {
     @Published var completions: Set<StretchCompletion> = []
-    @Published var errorMessage: String?
 
     private let backend: StretchBackend
+    private let sync: SyncEngine
+    private let cache: DiskCache
+    private let cacheName = "stretch-completions"
 
-    init(backend: StretchBackend = SupabaseBackend()) {
-        self.backend = backend
+    convenience init() {
+        self.init(backend: OfflineBackend(remote: SupabaseBackend(), engine: .shared),
+                  sync: .shared, cache: .standard)
     }
 
+    init(backend: StretchBackend, sync: SyncEngine, cache: DiskCache) {
+        self.backend = backend
+        self.sync = sync
+        self.cache = cache
+        completions = Set(cache.load(cacheName) ?? [StretchCompletion]())
+    }
+
+    /// Server state only replaces local state once nothing local is still
+    /// waiting to sync; failures keep the cached copy (offline is normal).
     func refresh() async {
-        await run {
-            completions = Set(try await backend.fetchStretchCompletions())
-        }
+        guard let fetched = try? await backend.fetchStretchCompletions(),
+              sync.pendingCount == 0 else { return }
+        completions = Set(fetched)
+        persist()
     }
 
     func isDone(dateKey: String, index: Int) -> Bool {
         completions.contains(StretchCompletion(date: dateKey, stretchIndex: index))
     }
 
+    /// Applies instantly; the write syncs in the background.
     func toggle(dateKey: String, index: Int) async {
         let completion = StretchCompletion(date: dateKey, stretchIndex: index)
-        await run {
-            if completions.contains(completion) {
-                try await backend.delete(completion)
-                completions.remove(completion)
-            } else {
-                try await backend.insert(completion)
-                completions.insert(completion)
-            }
+        if completions.contains(completion) {
+            completions.remove(completion)
+            try? await backend.delete(completion)
+        } else {
+            completions.insert(completion)
+            try? await backend.insert(completion)
         }
+        persist()
     }
 
     func doneCount(dateKey: String) -> Int {
@@ -93,13 +106,8 @@ class StretchStore: ObservableObject {
             .count
     }
 
-    private func run(_ operation: () async throws -> Void) async {
-        do {
-            try await operation()
-            errorMessage = nil
-        } catch {
-            errorMessage = error.localizedDescription
-        }
+    private func persist() {
+        cache.save(Array(completions), name: cacheName)
     }
 }
 

@@ -35,10 +35,13 @@ final class RenameStoreTests: XCTestCase {
     var backend: MockRenameBackend!
     var store: RenameStore!
 
+    var cache: DiskCache!
+
     override func setUp() {
         super.setUp()
         backend = MockRenameBackend()
-        store = RenameStore(backend: backend)
+        cache = makeCache()
+        store = RenameStore(backend: backend, sync: makeEngine(), cache: cache)
     }
 
     func testDisplayNameFallsBackToOriginal() {
@@ -51,7 +54,24 @@ final class RenameStoreTests: XCTestCase {
         await store.refresh()
 
         XCTAssertEqual(store.displayName(for: "DB Romanian deadlift"), "RDL")
-        XCTAssertNil(store.errorMessage)
+    }
+
+    func testStateSurvivesRelaunchViaCache() async {
+        await store.rename(original: "Back squat", to: "Squat")
+
+        let relaunched = RenameStore(
+            backend: backend, sync: makeEngine(), cache: cache)
+
+        XCTAssertEqual(relaunched.displayName(for: "Back squat"), "Squat")
+    }
+
+    func testRefreshFailureKeepsLocalState() async {
+        await store.rename(original: "Back squat", to: "Squat")
+        backend.failNext = TestError()
+
+        await store.refresh()
+
+        XCTAssertEqual(store.displayName(for: "Back squat"), "Squat")
     }
 
     func testRenamePersistsAndApplies() async {
@@ -85,16 +105,12 @@ final class RenameStoreTests: XCTestCase {
         XCTAssertNil(backend.stored["Back squat"])
     }
 
-    func testRenameFailureKeepsOldNameAndSetsError() async {
+    func testRenameIsOptimisticEvenIfBackendFails() async {
         backend.failNext = TestError()
 
         await store.rename(original: "Back squat", to: "Squat")
 
-        XCTAssertEqual(store.displayName(for: "Back squat"), "Back squat")
-        XCTAssertEqual(store.errorMessage, "backend exploded")
-
-        await store.refresh()
-        XCTAssertNil(store.errorMessage)
+        XCTAssertEqual(store.displayName(for: "Back squat"), "Squat")
     }
 
     func testDefaultInitUsesSupabaseBackend() {

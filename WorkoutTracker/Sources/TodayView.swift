@@ -7,6 +7,7 @@ struct TodayView: View {
     @EnvironmentObject var stretchStore: StretchStore
     @EnvironmentObject var renameStore: RenameStore
     @EnvironmentObject var logStore: LogStore
+    @EnvironmentObject var syncEngine: SyncEngine
     @State private var selectedDate = Date()
 
     private let maxes = TrainingMaxes.standard
@@ -28,7 +29,7 @@ struct TodayView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
                     header
-                    errorBanners
+                    SyncStatusBar()
 
                     if let day = planDay {
                         sectionTitle("Workout", systemImage: "dumbbell.fill")
@@ -114,12 +115,14 @@ struct TodayView: View {
                 navigationBar
             }
             .task {
+                await syncEngine.flush()
                 await completionStore.refresh()
                 await stretchStore.refresh()
                 await renameStore.refresh()
                 await logStore.refresh()
             }
             .refreshable {
+                await syncEngine.flush()
                 await completionStore.refresh()
                 await stretchStore.refresh()
                 await renameStore.refresh()
@@ -178,21 +181,6 @@ struct TodayView: View {
         }
     }
 
-    @ViewBuilder
-    private var errorBanners: some View {
-        ForEach([completionStore.errorMessage, stretchStore.errorMessage,
-                 renameStore.errorMessage, logStore.errorMessage].compactMap { $0 },
-                id: \.self) { message in
-            Text(message)
-                .font(.caption)
-                .foregroundColor(.white)
-                .frame(maxWidth: .infinity)
-                .padding(8)
-                .background(Color.red)
-                .clipShape(RoundedRectangle(cornerRadius: 8))
-        }
-    }
-
     private func sectionTitle(_ title: String, systemImage: String) -> some View {
         Label(title, systemImage: systemImage)
             .font(.headline)
@@ -233,6 +221,30 @@ struct TodayView: View {
         .padding(.horizontal, 24)
         .padding(.vertical, 8)
         .background(.bar)
+    }
+}
+
+/// Quiet sync status: a small "waiting to sync" note while offline changes
+/// queue, a red banner only when a write is permanently rejected.
+struct SyncStatusBar: View {
+    @EnvironmentObject var syncEngine: SyncEngine
+
+    var body: some View {
+        if let message = syncEngine.syncError {
+            Text(message)
+                .font(.caption)
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity)
+                .padding(8)
+                .background(Color.red)
+                .clipShape(RoundedRectangle(cornerRadius: 8))
+        }
+        if syncEngine.pendingCount > 0 {
+            Label("\(syncEngine.pendingCount) waiting to sync",
+                  systemImage: "icloud.and.arrow.up")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
     }
 }
 
@@ -441,4 +453,5 @@ struct StretchRow: View {
         .environmentObject(StretchStore())
         .environmentObject(RenameStore())
         .environmentObject(LogStore())
+        .environmentObject(SyncEngine.shared)
 }

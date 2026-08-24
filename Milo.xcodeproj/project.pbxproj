@@ -99,6 +99,13 @@
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
+		<key>BuildFile_Sync</key>
+		<dict>
+			<key>fileRef</key>
+			<string>File_Sync</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
 		<key>BuildFile_TodayView</key>
 		<dict>
 			<key>fileRef</key>
@@ -260,6 +267,17 @@
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
+		<key>File_Sync</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.swift</string>
+			<key>path</key>
+			<string>Sync.swift</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
 		<key>File_TodayView</key>
 		<dict>
 			<key>isa</key>
@@ -303,6 +321,7 @@
 				<string>BuildFile_Logs</string>
 				<string>BuildFile_Progress</string>
 				<string>BuildFile_ProgressTab</string>
+				<string>BuildFile_Sync</string>
 			</array>
 			<key>isa</key>
 			<string>PBXSourcesBuildPhase</string>
@@ -381,6 +400,7 @@
 				<string>File_Logs</string>
 				<string>File_Progress</string>
 				<string>File_ProgressTab</string>
+				<string>File_Sync</string>
 			</array>
 			<key>isa</key>
 			<string>PBXGroup</string>

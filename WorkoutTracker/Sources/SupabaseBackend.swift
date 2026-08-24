@@ -87,6 +87,65 @@ struct SupabaseBackend {
 
 }
 
+// The write builders produce PendingWrites so the same op can run now
+// (perform) or be queued for later replay by the sync engine. Inserts merge
+// duplicates, making every replay idempotent.
+extension SupabaseBackend {
+    func perform(_ write: PendingWrite) async throws {
+        try await send(request(
+            path: write.path, query: write.query, method: write.method,
+            body: write.body, prefer: write.prefer))
+    }
+
+    static func write(inserting completion: SetCompletion) throws -> PendingWrite {
+        PendingWrite(path: "set_completions", method: "POST", query: nil,
+                     body: try JSONEncoder().encode(completion),
+                     prefer: "resolution=merge-duplicates")
+    }
+
+    static func write(deleting completion: SetCompletion) -> PendingWrite {
+        PendingWrite(path: "set_completions", method: "DELETE",
+                     query: "day_id=eq.\(completion.dayId)&entry_index=eq.\(completion.entryIndex)",
+                     body: nil, prefer: nil)
+    }
+
+    static func write(inserting completion: StretchCompletion) throws -> PendingWrite {
+        PendingWrite(path: "stretch_completions", method: "POST", query: nil,
+                     body: try JSONEncoder().encode(completion),
+                     prefer: "resolution=merge-duplicates")
+    }
+
+    static func write(deleting completion: StretchCompletion) -> PendingWrite {
+        PendingWrite(path: "stretch_completions", method: "DELETE",
+                     query: "date=eq.\(completion.date)&stretch_index=eq.\(completion.stretchIndex)",
+                     body: nil, prefer: nil)
+    }
+
+    static func write(upserting rename: ExerciseRename) throws -> PendingWrite {
+        PendingWrite(path: "exercise_renames", method: "POST", query: nil,
+                     body: try JSONEncoder().encode(rename),
+                     prefer: "resolution=merge-duplicates")
+    }
+
+    static func write(deletingRename original: String) -> PendingWrite {
+        PendingWrite(path: "exercise_renames", method: "DELETE",
+                     query: "original=eq.\(encodeQueryValue(original))",
+                     body: nil, prefer: nil)
+    }
+
+    static func write(upserting log: ExerciseLog) throws -> PendingWrite {
+        PendingWrite(path: "exercise_logs", method: "POST", query: nil,
+                     body: try JSONEncoder().encode(log),
+                     prefer: "resolution=merge-duplicates")
+    }
+
+    static func write(deletingLogDayId dayId: Int, entryIndex: Int) -> PendingWrite {
+        PendingWrite(path: "exercise_logs", method: "DELETE",
+                     query: "day_id=eq.\(dayId)&entry_index=eq.\(entryIndex)",
+                     body: nil, prefer: nil)
+    }
+}
+
 extension SupabaseBackend: CompletionBackend {
     func fetchCompletions() async throws -> [SetCompletion] {
         let data = try await send(request(
@@ -96,16 +155,11 @@ extension SupabaseBackend: CompletionBackend {
     }
 
     func insert(_ completion: SetCompletion) async throws {
-        try await send(request(
-            path: "set_completions", method: "POST",
-            body: try JSONEncoder().encode(completion)))
+        try await perform(Self.write(inserting: completion))
     }
 
     func delete(_ completion: SetCompletion) async throws {
-        try await send(request(
-            path: "set_completions",
-            query: "day_id=eq.\(completion.dayId)&entry_index=eq.\(completion.entryIndex)",
-            method: "DELETE"))
+        try await perform(Self.write(deleting: completion))
     }
 }
 
@@ -118,16 +172,11 @@ extension SupabaseBackend: StretchBackend {
     }
 
     func insert(_ completion: StretchCompletion) async throws {
-        try await send(request(
-            path: "stretch_completions", method: "POST",
-            body: try JSONEncoder().encode(completion)))
+        try await perform(Self.write(inserting: completion))
     }
 
     func delete(_ completion: StretchCompletion) async throws {
-        try await send(request(
-            path: "stretch_completions",
-            query: "date=eq.\(completion.date)&stretch_index=eq.\(completion.stretchIndex)",
-            method: "DELETE"))
+        try await perform(Self.write(deleting: completion))
     }
 }
 
@@ -140,17 +189,11 @@ extension SupabaseBackend: LogBackend {
     }
 
     func upsertLog(_ log: ExerciseLog) async throws {
-        try await send(request(
-            path: "exercise_logs", method: "POST",
-            body: try JSONEncoder().encode(log),
-            prefer: "resolution=merge-duplicates"))
+        try await perform(Self.write(upserting: log))
     }
 
     func deleteLog(dayId: Int, entryIndex: Int) async throws {
-        try await send(request(
-            path: "exercise_logs",
-            query: "day_id=eq.\(dayId)&entry_index=eq.\(entryIndex)",
-            method: "DELETE"))
+        try await perform(Self.write(deletingLogDayId: dayId, entryIndex: entryIndex))
     }
 }
 
@@ -163,16 +206,10 @@ extension SupabaseBackend: RenameBackend {
     }
 
     func upsert(_ rename: ExerciseRename) async throws {
-        try await send(request(
-            path: "exercise_renames", method: "POST",
-            body: try JSONEncoder().encode(rename),
-            prefer: "resolution=merge-duplicates"))
+        try await perform(Self.write(upserting: rename))
     }
 
     func deleteRename(original: String) async throws {
-        try await send(request(
-            path: "exercise_renames",
-            query: "original=eq.\(Self.encodeQueryValue(original))",
-            method: "DELETE"))
+        try await perform(Self.write(deletingRename: original))
     }
 }

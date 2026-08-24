@@ -66,6 +66,16 @@
     "swift-dependencies" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTracker-t.build/Objects-normal/arm64/SupabaseBackend.swiftdeps",
     "swiftmodule" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTracker-t.build/Objects-normal/arm64/SupabaseBackend~partial.swiftmodule"
   },
+  "/Users/julio/code/personal/milo/WorkoutTracker/Sources/Sync.swift" : {
+    "const-values" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTracker-t.build/Objects-normal/arm64/Sync.swiftconstvalues",
+    "dependencies" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTracker-t.build/Objects-normal/arm64/Sync.d",
+    "diagnostics" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTracker-t.build/Objects-normal/arm64/Sync.dia",
+    "index-unit-output-path" : "/MiloCore.build/Debug/WorkoutTracker-t.build/Objects-normal/arm64/Sync.o",
+    "llvm-bc" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTracker-t.build/Objects-normal/arm64/Sync.bc",
+    "object" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTracker-t.build/Objects-normal/arm64/Sync.o",
+    "swift-dependencies" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTracker-t.build/Objects-normal/arm64/Sync.swiftdeps",
+    "swiftmodule" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTracker-t.build/Objects-normal/arm64/Sync~partial.swiftmodule"
+  },
   "/Users/julio/code/personal/milo/WorkoutTracker/Sources/TrainingPlan.swift" : {
     "const-values" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTracker-t.build/Objects-normal/arm64/TrainingPlan.swiftconstvalues",
     "dependencies" : "/Users/julio/code/personal/milo/.build/out/Intermediates.noindex/MiloCore.build/Debug/WorkoutTracker-t.build/Objects-normal/arm64/TrainingPlan.d",

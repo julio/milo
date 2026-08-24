@@ -7,6 +7,7 @@ import Charts
 struct ProgressTabView: View {
     @EnvironmentObject var logStore: LogStore
     @EnvironmentObject var renameStore: RenameStore
+    @EnvironmentObject var syncEngine: SyncEngine
     @State private var metric: ProgressMetric = .weight
 
     private var series: [ExerciseSeries] {
@@ -24,15 +25,7 @@ struct ProgressTabView: View {
                     }
                     .pickerStyle(.segmented)
 
-                    if let message = logStore.errorMessage {
-                        Text(message)
-                            .font(.caption)
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding(8)
-                            .background(Color.red)
-                            .clipShape(RoundedRectangle(cornerRadius: 8))
-                    }
+                    SyncStatusBar()
 
                     if series.isEmpty {
                         Text("No \(metric.rawValue.lowercased()) logged yet.\nEnter what you lift on the Today tab.")
@@ -54,10 +47,12 @@ struct ProgressTabView: View {
             .navigationTitle("Progress")
             .navigationBarTitleDisplayMode(.inline)
             .task {
+                await syncEngine.flush()
                 await logStore.refresh()
                 await renameStore.refresh()
             }
             .refreshable {
+                await syncEngine.flush()
                 await logStore.refresh()
                 await renameStore.refresh()
             }
@@ -127,4 +122,5 @@ struct SeriesCard: View {
     ProgressTabView()
         .environmentObject(LogStore())
         .environmentObject(RenameStore())
+        .environmentObject(SyncEngine.shared)
 }

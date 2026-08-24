@@ -37,10 +37,13 @@ final class CompletionStoreTests: XCTestCase {
     let day = TrainingPlan.days[0]        // 9 entries, none skipped
     let deloadDay = TrainingPlan.days[9]  // week 4 deload, one skipped entry
 
+    var cache: DiskCache!
+
     override func setUp() {
         super.setUp()
         backend = MockCompletionBackend()
-        store = CompletionStore(backend: backend)
+        cache = makeCache()
+        store = CompletionStore(backend: backend, sync: makeEngine(), cache: cache)
     }
 
     func testRefreshLoadsCompletions() async {
@@ -50,7 +53,39 @@ final class CompletionStoreTests: XCTestCase {
 
         XCTAssertTrue(store.isDone(dayId: 0, entryIndex: 1))
         XCTAssertFalse(store.isDone(dayId: 0, entryIndex: 2))
-        XCTAssertNil(store.errorMessage)
+    }
+
+    func testStateSurvivesRelaunchViaCache() async {
+        await store.toggle(dayId: 0, entryIndex: 1)
+
+        let relaunched = CompletionStore(
+            backend: backend, sync: makeEngine(), cache: cache)
+
+        XCTAssertTrue(relaunched.isDone(dayId: 0, entryIndex: 1))
+    }
+
+    func testRefreshFailureKeepsLocalState() async {
+        await store.toggle(dayId: 0, entryIndex: 1)
+        backend.failNext = TestError()
+
+        await store.refresh()
+
+        XCTAssertTrue(store.isDone(dayId: 0, entryIndex: 1))
+    }
+
+    func testRefreshDoesNotClobberWhileWritesArePending() async {
+        let failing = MockSyncTransport()
+        failing.failuresRemaining = .max
+        let engine = makeEngine(transport: failing)
+        store = CompletionStore(backend: backend, sync: engine, cache: cache)
+        await store.toggle(dayId: 0, entryIndex: 1)
+        engine.enqueue(someWrite())      // a local change still unsynced
+        await engine.flush()
+        backend.stored = []              // server hasn't seen it yet
+
+        await store.refresh()
+
+        XCTAssertTrue(store.isDone(dayId: 0, entryIndex: 1))
     }
 
     func testToggleMarksAndUnmarks() async {
@@ -64,17 +99,12 @@ final class CompletionStoreTests: XCTestCase {
         XCTAssertEqual(backend.calls, ["insert", "delete"])
     }
 
-    func testToggleFailureKeepsStateAndSetsError() async {
+    func testToggleIsOptimisticEvenIfBackendFails() async {
         backend.failNext = TestError()
 
         await store.toggle(dayId: 0, entryIndex: 1)
 
-        XCTAssertFalse(store.isDone(dayId: 0, entryIndex: 1))
-        XCTAssertEqual(store.errorMessage, "backend exploded")
-
-        await store.toggle(dayId: 0, entryIndex: 1)
         XCTAssertTrue(store.isDone(dayId: 0, entryIndex: 1))
-        XCTAssertNil(store.errorMessage)
     }
 
     func testTrackableIndicesExcludeSkippedRows() {

@@ -40,44 +40,63 @@ protocol LogBackend: Sendable {
 @MainActor
 class LogStore: ObservableObject {
     @Published var logs: [LogKey: ExerciseLog] = [:]
-    @Published var errorMessage: String?
 
     private let backend: LogBackend
+    private let sync: SyncEngine
+    private let cache: DiskCache
+    private let cacheName = "exercise-logs"
 
-    init(backend: LogBackend = SupabaseBackend()) {
-        self.backend = backend
+    convenience init() {
+        self.init(backend: OfflineBackend(remote: SupabaseBackend(), engine: .shared),
+                  sync: .shared, cache: .standard)
     }
 
+    init(backend: LogBackend, sync: SyncEngine, cache: DiskCache) {
+        self.backend = backend
+        self.sync = sync
+        self.cache = cache
+        let cached: [ExerciseLog] = cache.load(cacheName) ?? []
+        logs = Dictionary(uniqueKeysWithValues: cached.map {
+            (LogKey(dayId: $0.dayId, entryIndex: $0.entryIndex), $0)
+        })
+    }
+
+    /// Server state only replaces local state once nothing local is still
+    /// waiting to sync; failures keep the cached copy (offline is normal).
     func refresh() async {
-        await run {
-            let fetched = try await backend.fetchLogs()
-            logs = Dictionary(uniqueKeysWithValues: fetched.map {
-                (LogKey(dayId: $0.dayId, entryIndex: $0.entryIndex), $0)
-            })
-        }
+        guard let fetched = try? await backend.fetchLogs(),
+              sync.pendingCount == 0 else { return }
+        logs = Dictionary(uniqueKeysWithValues: fetched.map {
+            (LogKey(dayId: $0.dayId, entryIndex: $0.entryIndex), $0)
+        })
+        persist()
     }
 
     func log(dayId: Int, entryIndex: Int) -> ExerciseLog? {
         logs[LogKey(dayId: dayId, entryIndex: entryIndex)]
     }
 
-    /// Saves what was actually lifted. Clearing both fields deletes the row;
-    /// an unchanged value is not re-sent.
+    /// Saves what was actually lifted, applying instantly; the write syncs
+    /// in the background. Clearing both fields deletes the row; an
+    /// unchanged value is not re-sent.
     func save(dayId: Int, entryIndex: Int, weight: Double?, reps: Int?) async {
         let key = LogKey(dayId: dayId, entryIndex: entryIndex)
-        await run {
-            if weight == nil && reps == nil {
-                guard logs[key] != nil else { return }
-                try await backend.deleteLog(dayId: dayId, entryIndex: entryIndex)
-                logs[key] = nil
-            } else {
-                let log = ExerciseLog(
-                    dayId: dayId, entryIndex: entryIndex, weight: weight, reps: reps)
-                guard logs[key] != log else { return }
-                try await backend.upsertLog(log)
-                logs[key] = log
-            }
+        if weight == nil && reps == nil {
+            guard logs[key] != nil else { return }
+            logs[key] = nil
+            try? await backend.deleteLog(dayId: dayId, entryIndex: entryIndex)
+        } else {
+            let log = ExerciseLog(
+                dayId: dayId, entryIndex: entryIndex, weight: weight, reps: reps)
+            guard logs[key] != log else { return }
+            logs[key] = log
+            try? await backend.upsertLog(log)
         }
+        persist()
+    }
+
+    private func persist() {
+        cache.save(Array(logs.values), name: cacheName)
     }
 
     /// A single-set row logs through its done toggle: done writes the weight
@@ -103,12 +122,4 @@ class LogStore: ObservableObject {
         return weight == weight.rounded() ? String(Int(weight)) : String(weight)
     }
 
-    private func run(_ operation: () async throws -> Void) async {
-        do {
-            try await operation()
-            errorMessage = nil
-        } catch {
-            errorMessage = error.localizedDescription
-        }
-    }
 }

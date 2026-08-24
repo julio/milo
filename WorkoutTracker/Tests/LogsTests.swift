@@ -35,10 +35,13 @@ final class LogStoreTests: XCTestCase {
     var backend: MockLogBackend!
     var store: LogStore!
 
+    var cache: DiskCache!
+
     override func setUp() {
         super.setUp()
         backend = MockLogBackend()
-        store = LogStore(backend: backend)
+        cache = makeCache()
+        store = LogStore(backend: backend, sync: makeEngine(), cache: cache)
     }
 
     func testDefaultInitUsesSupabase() {
@@ -57,16 +60,23 @@ final class LogStoreTests: XCTestCase {
         XCTAssertEqual(store.log(dayId: 0, entryIndex: 1)?.weight, 90)
         XCTAssertEqual(store.log(dayId: 3, entryIndex: 2)?.reps, 12)
         XCTAssertNil(store.log(dayId: 9, entryIndex: 9))
-        XCTAssertNil(store.errorMessage)
     }
 
-    func testRefreshFailureSetsError() async {
+    func testStateSurvivesRelaunchViaCache() async {
+        await store.save(dayId: 0, entryIndex: 1, weight: 95, reps: 5)
+
+        let relaunched = LogStore(backend: backend, sync: makeEngine(), cache: cache)
+
+        XCTAssertEqual(relaunched.log(dayId: 0, entryIndex: 1)?.weight, 95)
+    }
+
+    func testRefreshFailureKeepsLocalState() async {
+        await store.save(dayId: 0, entryIndex: 1, weight: 95, reps: 5)
         backend.failNext = TestError()
 
         await store.refresh()
 
-        XCTAssertEqual(store.errorMessage, "backend exploded")
-        XCTAssertTrue(store.logs.isEmpty)
+        XCTAssertEqual(store.log(dayId: 0, entryIndex: 1)?.weight, 95)
     }
 
     func testSaveUpserts() async {
@@ -75,7 +85,6 @@ final class LogStoreTests: XCTestCase {
         XCTAssertEqual(backend.upserts,
                        [ExerciseLog(dayId: 0, entryIndex: 1, weight: 95, reps: 5)])
         XCTAssertEqual(store.log(dayId: 0, entryIndex: 1)?.weight, 95)
-        XCTAssertNil(store.errorMessage)
     }
 
     func testSaveRepsOnlyUpserts() async {
@@ -110,23 +119,12 @@ final class LogStoreTests: XCTestCase {
         XCTAssertTrue(backend.upserts.isEmpty)
     }
 
-    func testSaveFailureKeepsStateAndSetsError() async {
+    func testSaveIsOptimisticEvenIfBackendFails() async {
         backend.failNext = TestError()
 
         await store.save(dayId: 0, entryIndex: 1, weight: 95, reps: 5)
 
-        XCTAssertEqual(store.errorMessage, "backend exploded")
-        XCTAssertNil(store.log(dayId: 0, entryIndex: 1))
-    }
-
-    func testDeleteFailureKeepsStateAndSetsError() async {
-        await store.save(dayId: 0, entryIndex: 1, weight: 95, reps: 5)
-        backend.failNext = TestError()
-
-        await store.save(dayId: 0, entryIndex: 1, weight: nil, reps: nil)
-
-        XCTAssertEqual(store.errorMessage, "backend exploded")
-        XCTAssertNotNil(store.log(dayId: 0, entryIndex: 1))
+        XCTAssertEqual(store.log(dayId: 0, entryIndex: 1)?.weight, 95)
     }
 
     // MARK: - Single-set rows log through the done toggle

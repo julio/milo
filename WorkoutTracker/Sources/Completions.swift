@@ -29,35 +29,52 @@ enum DayStatus: Equatable {
 @MainActor
 class CompletionStore: ObservableObject {
     @Published var completions: Set<SetCompletion> = []
-    @Published var errorMessage: String?
 
     private let backend: CompletionBackend
+    private let sync: SyncEngine
+    private let cache: DiskCache
+    private let cacheName = "set-completions"
 
-    init(backend: CompletionBackend = SupabaseBackend()) {
-        self.backend = backend
+    convenience init() {
+        self.init(backend: OfflineBackend(remote: SupabaseBackend(), engine: .shared),
+                  sync: .shared, cache: .standard)
     }
 
+    init(backend: CompletionBackend, sync: SyncEngine, cache: DiskCache) {
+        self.backend = backend
+        self.sync = sync
+        self.cache = cache
+        completions = Set(cache.load(cacheName) ?? [SetCompletion]())
+    }
+
+    /// Server state only replaces local state once nothing local is still
+    /// waiting to sync; failures keep the cached copy (offline is normal).
     func refresh() async {
-        await run {
-            completions = Set(try await backend.fetchCompletions())
-        }
+        guard let fetched = try? await backend.fetchCompletions(),
+              sync.pendingCount == 0 else { return }
+        completions = Set(fetched)
+        persist()
     }
 
     func isDone(dayId: Int, entryIndex: Int) -> Bool {
         completions.contains(SetCompletion(dayId: dayId, entryIndex: entryIndex))
     }
 
+    /// Applies instantly; the write syncs in the background.
     func toggle(dayId: Int, entryIndex: Int) async {
         let completion = SetCompletion(dayId: dayId, entryIndex: entryIndex)
-        await run {
-            if completions.contains(completion) {
-                try await backend.delete(completion)
-                completions.remove(completion)
-            } else {
-                try await backend.insert(completion)
-                completions.insert(completion)
-            }
+        if completions.contains(completion) {
+            completions.remove(completion)
+            try? await backend.delete(completion)
+        } else {
+            completions.insert(completion)
+            try? await backend.insert(completion)
         }
+        persist()
+    }
+
+    private func persist() {
+        cache.save(Array(completions), name: cacheName)
     }
 
     /// Indices of a day's entries that count toward completion — everything
@@ -87,14 +104,6 @@ class CompletionStore: ObservableObject {
         return status(for: planDay)
     }
 
-    private func run(_ operation: () async throws -> Void) async {
-        do {
-            try await operation()
-            errorMessage = nil
-        } catch {
-            errorMessage = error.localizedDescription
-        }
-    }
 }
 
 /// Month-grid math for the calendar screen, kept out of the view for tests.

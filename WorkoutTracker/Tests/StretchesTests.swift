@@ -74,10 +74,13 @@ final class StretchStoreTests: XCTestCase {
     var store: StretchStore!
     let key = "2026-08-16"
 
+    var cache: DiskCache!
+
     override func setUp() {
         super.setUp()
         backend = MockStretchBackend()
-        store = StretchStore(backend: backend)
+        cache = makeCache()
+        store = StretchStore(backend: backend, sync: makeEngine(), cache: cache)
     }
 
     func testRefreshLoadsCompletions() async {
@@ -87,7 +90,24 @@ final class StretchStoreTests: XCTestCase {
 
         XCTAssertTrue(store.isDone(dateKey: key, index: 2))
         XCTAssertFalse(store.isDone(dateKey: key, index: 0))
-        XCTAssertNil(store.errorMessage)
+    }
+
+    func testStateSurvivesRelaunchViaCache() async {
+        await store.toggle(dateKey: key, index: 3)
+
+        let relaunched = StretchStore(
+            backend: backend, sync: makeEngine(), cache: cache)
+
+        XCTAssertTrue(relaunched.isDone(dateKey: key, index: 3))
+    }
+
+    func testRefreshFailureKeepsLocalState() async {
+        await store.toggle(dateKey: key, index: 0)
+        backend.failNext = TestError()
+
+        await store.refresh()
+
+        XCTAssertTrue(store.isDone(dateKey: key, index: 0))
     }
 
     func testToggleMarksAndUnmarks() async {
@@ -110,16 +130,12 @@ final class StretchStoreTests: XCTestCase {
         XCTAssertEqual(store.doneCount(dateKey: "2026-08-18"), 0)
     }
 
-    func testToggleFailureKeepsStateAndSetsError() async {
+    func testToggleIsOptimisticEvenIfBackendFails() async {
         backend.failNext = TestError()
 
         await store.toggle(dateKey: key, index: 0)
 
-        XCTAssertFalse(store.isDone(dateKey: key, index: 0))
-        XCTAssertEqual(store.errorMessage, "backend exploded")
-
-        await store.refresh()
-        XCTAssertNil(store.errorMessage)
+        XCTAssertTrue(store.isDone(dateKey: key, index: 0))
     }
 
     func testDefaultInitUsesSupabaseBackend() {
