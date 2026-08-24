@@ -35,6 +35,24 @@ enum StretchPlan {
         let c = calendar.dateComponents([.year, .month, .day], from: date)
         return dateKey(year: c.year!, month: c.month!, day: c.day!)
     }
+
+    /// Skipped on strength-training days — the session already covers them.
+    static let trainingDaySkips = ["Plank on Gym Ball", "Doorway Squats"]
+
+    /// The stretches to do on a date: the full list on rest days, trimmed
+    /// on training days. Original indices, so completion keys stay stable.
+    static func activeIndices(year: Int, month: Int, day: Int) -> [Int] {
+        let isTrainingDay = year == PlanDay.planYear && TrainingPlan.days.contains {
+            $0.month == month && $0.day == day
+        }
+        guard isTrainingDay else { return Array(stretches.indices) }
+        return stretches.indices.filter { !trainingDaySkips.contains(stretches[$0]) }
+    }
+
+    static func activeIndices(on date: Date, calendar: Calendar = .current) -> [Int] {
+        let c = calendar.dateComponents([.year, .month, .day], from: date)
+        return activeIndices(year: c.year!, month: c.month!, day: c.day!)
+    }
 }
 
 struct StretchCompletion: Codable, Hashable {
@@ -135,8 +153,9 @@ enum DayProgress {
 
         if StretchPlan.isActive(year: year, month: month, day: day) {
             let key = StretchPlan.dateKey(year: year, month: month, day: day)
-            total += StretchPlan.stretches.count
-            done += StretchPlan.stretches.indices.filter {
+            let indices = StretchPlan.activeIndices(year: year, month: month, day: day)
+            total += indices.count
+            done += indices.filter {
                 stretchCompletions.contains(
                     StretchCompletion(date: key, stretchIndex: $0))
             }.count

@@ -79,7 +79,7 @@ struct TodayView: View {
                     if stretchesActive {
                         sectionTitle("Stretches", systemImage: "figure.cooldown")
                         VStack(spacing: 10) {
-                            ForEach(StretchPlan.stretches.indices, id: \.self) { index in
+                            ForEach(StretchPlan.activeIndices(on: selectedDate), id: \.self) { index in
                                 StretchRow(
                                     name: renameStore.displayName(for: StretchPlan.stretches[index]),
                                     isDone: stretchStore.isDone(dateKey: dateKey, index: index),

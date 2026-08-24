@@ -161,12 +161,37 @@ final class DayProgressTests: XCTestCase {
     }
 
     func testCountsOnTrainingDayIncludeBoth() {
+        // Training days trim the stretch list to 4.
         let counts = DayProgress.counts(
             month: 8, day: 17,
             trainingCompletions: trainingSet(0, [0, 1, 2]),
             stretchCompletions: stretchSet("2026-08-17", [0]))
         XCTAssertEqual(counts.done, 4)
-        XCTAssertEqual(counts.total, 9 + 6)
+        XCTAssertEqual(counts.total, 9 + 4)
+    }
+
+    func testTrainingDaysSkipPlankOnBallAndDoorwaySquats() {
+        // Aug 17 is a training day: indices 2 and 4 drop out.
+        XCTAssertEqual(StretchPlan.activeIndices(year: 2026, month: 8, day: 17),
+                       [0, 1, 3, 5])
+        // Aug 16 is a rest day, and 2027 has no plan: full list.
+        XCTAssertEqual(StretchPlan.activeIndices(year: 2026, month: 8, day: 16),
+                       [0, 1, 2, 3, 4, 5])
+        XCTAssertEqual(StretchPlan.activeIndices(year: 2027, month: 8, day: 17),
+                       [0, 1, 2, 3, 4, 5])
+
+        let calendar = Calendar.current
+        let trainingDay = calendar.date(
+            from: DateComponents(year: 2026, month: 8, day: 17))!
+        XCTAssertEqual(StretchPlan.activeIndices(on: trainingDay), [0, 1, 3, 5])
+    }
+
+    func testSkippedStretchCompletionsDoNotCountOnTrainingDays() {
+        let counts = DayProgress.counts(
+            month: 8, day: 17,
+            trainingCompletions: [],
+            stretchCompletions: stretchSet("2026-08-17", [2, 4]))
+        XCTAssertEqual(counts.done, 0)
     }
 
     func testCountsBeforeEverythingAreZero() {
@@ -198,7 +223,8 @@ final class DayProgressTests: XCTestCase {
     }
 
     func testTrainingDayNeedsBothToComplete() {
-        // Aug 17 = plan day 0 with 9 trackable sets + 6 stretches.
+        // Aug 17 = plan day 0 with 9 trackable sets + 4 active stretches
+        // (checking all 6 still completes; the extra two just don't count).
         let allSets = trainingSet(0, Array(0..<9))
         let allStretches = stretchSet("2026-08-17", Array(0..<6))
 
