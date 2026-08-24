@@ -80,6 +80,17 @@ class LogStore: ObservableObject {
         }
     }
 
+    /// A single-set row logs through its done toggle: done writes the weight
+    /// (kept if already customized) with the set counted; undone clears it.
+    func setDone(_ done: Bool, dayId: Int, entryIndex: Int, plannedWeight: Double?) async {
+        if done {
+            let weight = log(dayId: dayId, entryIndex: entryIndex)?.weight ?? plannedWeight
+            await save(dayId: dayId, entryIndex: entryIndex, weight: weight, reps: 1)
+        } else {
+            await save(dayId: dayId, entryIndex: entryIndex, weight: nil, reps: nil)
+        }
+    }
+
     // Lenient parsing/formatting for the tiny inline fields.
 
     static func parseWeight(_ text: String) -> Double? {

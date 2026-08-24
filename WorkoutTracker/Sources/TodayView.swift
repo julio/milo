@@ -44,6 +44,14 @@ struct TodayView: View {
                                     onToggle: {
                                         Task {
                                             await completionStore.toggle(dayId: day.id, entryIndex: index)
+                                            // A single-set row has no checkbox of its
+                                            // own; done doubles as the set log.
+                                            if entry.checkCount == 1 {
+                                                await logStore.setDone(
+                                                    completionStore.isDone(dayId: day.id, entryIndex: index),
+                                                    dayId: day.id, entryIndex: index,
+                                                    plannedWeight: maxes.plannedWeight(for: entry.weight))
+                                            }
                                         }
                                     },
                                     onRename: { newName in
@@ -347,13 +355,16 @@ struct LogFields: View {
                 .keyboardType(.decimalPad)
                 .focused($focused)
                 .frame(width: 56)
-            RepChecks(
-                total: checkCount,
-                done: min(checksDone, checkCount),
-                onChange: { count in
-                    onLog(LogStore.parseWeight(weightText),
-                          count == 0 ? nil : count)
-                })
+            // One set needs no box of its own — the row's done toggle is it.
+            if checkCount > 1 {
+                RepChecks(
+                    total: checkCount,
+                    done: min(checksDone, checkCount),
+                    onChange: { count in
+                        onLog(LogStore.parseWeight(weightText),
+                              count == 0 ? nil : count)
+                    })
+            }
         }
         .font(.caption)
         .textFieldStyle(.roundedBorder)

@@ -129,6 +129,40 @@ final class LogStoreTests: XCTestCase {
         XCTAssertNotNil(store.log(dayId: 0, entryIndex: 1))
     }
 
+    // MARK: - Single-set rows log through the done toggle
+
+    func testSetDoneLogsPlannedWeightAndOneSet() async {
+        await store.setDone(true, dayId: 0, entryIndex: 1, plannedWeight: 90)
+
+        XCTAssertEqual(store.log(dayId: 0, entryIndex: 1),
+                       ExerciseLog(dayId: 0, entryIndex: 1, weight: 90, reps: 1))
+    }
+
+    func testSetDoneKeepsCustomizedWeight() async {
+        await store.save(dayId: 0, entryIndex: 1, weight: 95, reps: nil)
+
+        await store.setDone(true, dayId: 0, entryIndex: 1, plannedWeight: 90)
+
+        XCTAssertEqual(store.log(dayId: 0, entryIndex: 1)?.weight, 95)
+        XCTAssertEqual(store.log(dayId: 0, entryIndex: 1)?.reps, 1)
+    }
+
+    func testSetDoneWithoutWeightStillCountsTheSet() async {
+        await store.setDone(true, dayId: 0, entryIndex: 7, plannedWeight: nil)
+
+        XCTAssertEqual(store.log(dayId: 0, entryIndex: 7),
+                       ExerciseLog(dayId: 0, entryIndex: 7, weight: nil, reps: 1))
+    }
+
+    func testSetUndoneClearsTheLog() async {
+        await store.setDone(true, dayId: 0, entryIndex: 1, plannedWeight: 90)
+
+        await store.setDone(false, dayId: 0, entryIndex: 1, plannedWeight: 90)
+
+        XCTAssertNil(store.log(dayId: 0, entryIndex: 1))
+        XCTAssertEqual(backend.deletes.count, 1)
+    }
+
     // MARK: - Parsing and formatting
 
     func testParseWeight() {
