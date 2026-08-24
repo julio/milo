@@ -302,7 +302,7 @@ struct PlanEntryRow: View {
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
-                if !entry.isSkipped {
+                if !entry.isSkipped && entry.isLoggable {
                     LogFields(
                         log: log,
                         plannedWeight: maxes.plannedWeight(for: entry.weight),

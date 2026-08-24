@@ -226,6 +226,13 @@ final class TrainingPlanTests: XCTestCase {
         XCTAssertNil(entry("x").plannedReps)
     }
 
+    func testTimeOnlyRowsAreNotLoggable() {
+        XCTAssertFalse(entry("5 min").isLoggable)
+        XCTAssertFalse(entry("15–20 min").isLoggable)
+        XCTAssertTrue(entry("Set 1 — 5 reps").isLoggable)
+        XCTAssertTrue(entry("3 x 10").isLoggable)
+    }
+
     func testPlannedWeight() {
         let maxes = TrainingMaxes.standard
         XCTAssertNil(maxes.plannedWeight(for: .none))

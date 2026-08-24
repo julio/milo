@@ -28,6 +28,10 @@ struct PlanEntry: Equatable {
         }
         return nil
     }
+
+    /// Rows with a countable rep column take a weight/reps log; time-only
+    /// cardio like the treadmill has nothing sensible to log.
+    var isLoggable: Bool { plannedReps != nil }
 }
 
 struct PlanDay: Identifiable, Equatable {
