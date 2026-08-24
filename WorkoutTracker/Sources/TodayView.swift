@@ -307,6 +307,7 @@ struct PlanEntryRow: View {
                         log: log,
                         plannedWeight: maxes.plannedWeight(for: entry.weight),
                         plannedReps: entry.plannedReps,
+                        repCountable: entry.isRepCountable,
                         onLog: onLog)
                 }
             }
@@ -324,13 +325,15 @@ struct PlanEntryRow: View {
     }
 }
 
-/// Inline capture of what was actually lifted. Fields start prefilled with
-/// the plan's prescription; commits when focus leaves the fields; clearing
-/// both deletes the log.
+/// Inline capture of what was actually lifted. The weight field starts
+/// prefilled with the plan's prescription and commits when focus leaves it.
+/// Rep-counting rows show one checkbox per prescribed rep; time/distance
+/// rows keep a quantity field instead.
 struct LogFields: View {
     let log: ExerciseLog?
     let plannedWeight: Double?
     let plannedReps: Int?
+    let repCountable: Bool
     let onLog: (Double?, Int?) -> Void
 
     @State private var weightText = ""
@@ -339,20 +342,35 @@ struct LogFields: View {
 
     enum Field { case weight, reps }
 
+    private var repsDone: Int { log?.reps ?? 0 }
+
     var body: some View {
-        HStack(spacing: 6) {
-            Image(systemName: "chart.line.uptrend.xyaxis")
-                .font(.caption2)
-                .foregroundStyle(.tertiary)
-            TextField("lb", text: $weightText)
-                .keyboardType(.decimalPad)
-                .focused($focusedField, equals: .weight)
-                .frame(width: 56)
-            TextField("reps", text: $repsText)
-                .keyboardType(.numberPad)
-                .focused($focusedField, equals: .reps)
-                .frame(width: 48)
-            Spacer()
+        VStack(alignment: .leading, spacing: 6) {
+            HStack(spacing: 6) {
+                Image(systemName: "chart.line.uptrend.xyaxis")
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+                TextField("lb", text: $weightText)
+                    .keyboardType(.decimalPad)
+                    .focused($focusedField, equals: .weight)
+                    .frame(width: 56)
+                if !repCountable {
+                    TextField("reps", text: $repsText)
+                        .keyboardType(.numberPad)
+                        .focused($focusedField, equals: .reps)
+                        .frame(width: 48)
+                }
+                Spacer()
+            }
+            if repCountable, let plannedReps {
+                RepChecks(
+                    total: plannedReps,
+                    done: min(repsDone, plannedReps),
+                    onChange: { count in
+                        onLog(LogStore.parseWeight(weightText),
+                              count == 0 ? nil : count)
+                    })
+            }
         }
         .font(.caption)
         .textFieldStyle(.roundedBorder)
@@ -371,12 +389,37 @@ struct LogFields: View {
             repsText = LogStore.repsText(log.reps)
         } else {
             weightText = LogStore.weightText(plannedWeight)
-            repsText = LogStore.repsText(plannedReps)
+            repsText = repCountable ? "" : LogStore.repsText(plannedReps)
         }
     }
 
     private func commit() {
-        onLog(LogStore.parseWeight(weightText), LogStore.parseReps(repsText))
+        let reps = repCountable
+            ? (repsDone == 0 ? nil : repsDone)
+            : LogStore.parseReps(repsText)
+        onLog(LogStore.parseWeight(weightText), reps)
+    }
+}
+
+/// One checkbox per prescribed rep, filled left to right. Tapping a box
+/// counts up to it; tapping the last checked box takes that rep back.
+struct RepChecks: View {
+    let total: Int
+    let done: Int
+    let onChange: (Int) -> Void
+
+    var body: some View {
+        HStack(spacing: 4) {
+            ForEach(0..<total, id: \.self) { index in
+                Image(systemName: index < done ? "checkmark.circle.fill" : "circle")
+                    .font(.system(size: 17))
+                    .foregroundStyle(index < done ? .green : .secondary)
+                    .onTapGesture {
+                        onChange(index + 1 == done ? index : index + 1)
+                    }
+            }
+            Spacer()
+        }
     }
 }
 

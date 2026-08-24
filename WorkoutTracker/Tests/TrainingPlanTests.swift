@@ -233,6 +233,17 @@ final class TrainingPlanTests: XCTestCase {
         XCTAssertTrue(entry("3 x 10").isLoggable)
     }
 
+    func testRepCountableSeparatesRepsFromTimeAndDistance() {
+        XCTAssertTrue(entry("Set 1 — 5 reps").isRepCountable)
+        XCTAssertTrue(entry("3 x 10").isRepCountable)
+        XCTAssertTrue(entry("5 x 5").isRepCountable)
+        XCTAssertFalse(entry("3 x 45 sec").isRepCountable)
+        XCTAssertFalse(entry("3 x 40 m").isRepCountable)
+        XCTAssertFalse(entry("5 min").isRepCountable)
+        XCTAssertFalse(entry("3 x nope").isRepCountable)
+        XCTAssertFalse(entry("—").isRepCountable)
+    }
+
     func testPlannedWeight() {
         let maxes = TrainingMaxes.standard
         XCTAssertNil(maxes.plannedWeight(for: .none))

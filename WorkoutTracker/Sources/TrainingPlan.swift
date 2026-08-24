@@ -32,6 +32,18 @@ struct PlanEntry: Equatable {
     /// Rows with a countable rep column take a weight/reps log; time-only
     /// cardio like the treadmill has nothing sensible to log.
     var isLoggable: Bool { plannedReps != nil }
+
+    /// True when the rep column counts actual reps ("Set 1 — 5 reps",
+    /// "3 x 10") rather than time or distance ("3 x 45 sec", "3 x 40 m").
+    /// Rep-counting rows check reps off one by one instead of typing them.
+    var isRepCountable: Bool {
+        let tokens = setsReps.split(separator: " ").map(String.init)
+        if tokens.contains("reps") { return true }
+        if let index = tokens.firstIndex(of: "x"), index + 1 < tokens.count {
+            return index + 1 == tokens.count - 1 && Int(tokens[index + 1]) != nil
+        }
+        return false
+    }
 }
 
 struct PlanDay: Identifiable, Equatable {
