@@ -214,10 +214,11 @@ final class TrainingPlanTests: XCTestCase {
                   note: "", isSkipped: false)
     }
 
-    func testCheckCountIsRepsForSingleSetRowsAndSetsForNxM() {
-        // One row per set: a box per rep.
-        XCTAssertEqual(entry("Set 1 — 5 reps").checkCount, 5)
-        // One row for all sets: a box per set.
+    func testCheckCountIsOneBoxPerSet() {
+        // "Set N — M reps" is a single set.
+        XCTAssertEqual(entry("Set 1 — 5 reps").checkCount, 1)
+        XCTAssertEqual(entry("Set 3 — 5 reps").checkCount, 1)
+        // "N x M" is N sets.
         XCTAssertEqual(entry("3 x 10").checkCount, 3)
         XCTAssertEqual(entry("5 x 10").checkCount, 5)
         XCTAssertEqual(entry("5 x 5").checkCount, 5)

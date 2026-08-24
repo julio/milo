@@ -16,14 +16,14 @@ struct PlanEntry: Equatable {
     let note: String
     let isSkipped: Bool
 
-    /// How many boxes the row checks off — one per unit you finish and rest
-    /// after. A single-set row counts its reps ("Set 1 — 5 reps" → 5); an
-    /// "N x M" row counts its sets ("3 x 10" → 3, "3 x 45 sec" → 3).
+    /// One checkbox per set. "Set 1 — 5 reps" is a single set → 1 box;
+    /// "N x M" is N sets → N boxes ("3 x 10" → 3, "3 x 45 sec" → 3).
     /// Time-only rows ("5 min" treadmill) have none.
     var checkCount: Int? {
         let tokens = setsReps.split(separator: " ").map(String.init)
-        if let index = tokens.firstIndex(of: "reps"), index > 0 {
-            return Int(tokens[index - 1])
+        if let index = tokens.firstIndex(of: "reps"), index > 0,
+           Int(tokens[index - 1]) != nil {
+            return 1
         }
         if let index = tokens.firstIndex(of: "x"), index > 0 {
             return Int(tokens[index - 1])
