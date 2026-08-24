@@ -49,6 +49,14 @@ enum ProgressData {
         return day.entries[index].exercise
     }
 
+    /// "Deadlift — volume" is the same movement as "Deadlift"; volume work
+    /// charts with its main lift. Applies to all "<lift> — volume" rows.
+    static func canonicalExercise(_ name: String) -> String {
+        let suffix = " — volume"
+        guard name.hasSuffix(suffix) else { return name }
+        return String(name.dropLast(suffix.count))
+    }
+
     static func value(of log: ExerciseLog, for metric: ProgressMetric) -> Double? {
         switch metric {
         case .weight: return log.weight
@@ -65,7 +73,7 @@ enum ProgressData {
             for index in day.entries.indices {
                 guard let log = logs[LogKey(dayId: day.id, entryIndex: index)],
                       let value = value(of: log, for: metric) else { continue }
-                let name = resolvedExercise(day: day, entryIndex: index)
+                let name = canonicalExercise(resolvedExercise(day: day, entryIndex: index))
                 if bestByDay[name] == nil {
                     order.append(name)
                 }

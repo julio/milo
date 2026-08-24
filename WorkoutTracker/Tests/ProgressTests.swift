@@ -42,6 +42,34 @@ final class ProgressTests: XCTestCase {
         XCTAssertEqual(ProgressData.resolvedExercise(day: squatDay1, entryIndex: 5), "DB Romanian deadlift")
     }
 
+    func testCanonicalExerciseFoldsVolumeIntoMainLift() {
+        XCTAssertEqual(ProgressData.canonicalExercise("Deadlift — volume"), "Deadlift")
+        XCTAssertEqual(ProgressData.canonicalExercise("Back squat — volume"), "Back squat")
+        XCTAssertEqual(ProgressData.canonicalExercise("Bench press — volume"), "Bench press")
+        XCTAssertEqual(ProgressData.canonicalExercise("Back squat"), "Back squat")
+        XCTAssertEqual(ProgressData.canonicalExercise("Plank"), "Plank")
+    }
+
+    func testVolumeWorkChartsWithItsMainLift() {
+        // Day 0: entry 3 is the top squat set, entry 4 is "Back squat — volume".
+        let series = ProgressData.series(metric: .weight, logs: logs([
+            ExerciseLog(dayId: squatDay1.id, entryIndex: 3, weight: 115, reps: 5),
+            ExerciseLog(dayId: squatDay1.id, entryIndex: 4, weight: 70, reps: 10),
+        ]))
+
+        XCTAssertEqual(series.map(\.exercise), ["Back squat"])
+        XCTAssertEqual(series[0].points.map(\.value), [115])
+    }
+
+    func testVolumeOnlyDayStillChartsUnderMainLift() {
+        let series = ProgressData.series(metric: .weight, logs: logs([
+            ExerciseLog(dayId: squatDay1.id, entryIndex: 4, weight: 70, reps: 10),
+        ]))
+
+        XCTAssertEqual(series.map(\.exercise), ["Back squat"])
+        XCTAssertEqual(series[0].points.map(\.value), [70])
+    }
+
     // MARK: - Series building
 
     func testEmptyLogsMakeNoSeries() {
