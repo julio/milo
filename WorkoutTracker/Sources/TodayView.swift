@@ -34,7 +34,8 @@ struct TodayView: View {
                         sectionTitle("Workout", systemImage: "dumbbell.fill")
                         VStack(spacing: 10) {
                             ForEach(Array(day.entries.enumerated()), id: \.offset) { index, entry in
-                                let liftName = ProgressData.resolvedExercise(day: day, entryIndex: index)
+                                let liftName = ProgressData.canonicalExercise(
+                                    ProgressData.resolvedExercise(day: day, entryIndex: index))
                                 PlanEntryRow(
                                     entry: entry,
                                     displayName: renameStore.displayName(for: liftName),
