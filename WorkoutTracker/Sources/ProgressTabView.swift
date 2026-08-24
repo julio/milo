@@ -69,6 +69,13 @@ struct SeriesCard: View {
         return .secondary
     }
 
+    // Fixed yy/MM/dd regardless of locale ordering.
+    static let axisFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yy/MM/dd"
+        return formatter
+    }()
+
     // Padded so a single logged day still spans several days — otherwise
     // the automatic axis subdivides one day into hours.
     private var xDomain: ClosedRange<Date> {
@@ -113,9 +120,13 @@ struct SeriesCard: View {
             }
             .chartXScale(domain: xDomain)
             .chartXAxis {
-                AxisMarks(values: .automatic(desiredCount: 4)) { _ in
+                AxisMarks(values: .automatic(desiredCount: 3)) { value in
                     AxisGridLine()
-                    AxisValueLabel(format: .dateTime.month(.defaultDigits).day())
+                    AxisValueLabel {
+                        if let date = value.as(Date.self) {
+                            Text(Self.axisFormatter.string(from: date))
+                        }
+                    }
                 }
             }
             .chartYScale(domain: .automatic(includesZero: false))
