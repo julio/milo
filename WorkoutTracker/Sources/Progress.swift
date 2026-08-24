@@ -48,17 +48,39 @@ enum ProgressData {
         weight * (1 + Double(reps) / 30)
     }
 
-    /// One series per exercise with any logged weight on a rep-based row,
-    /// ordered by first appearance in the plan. Each day contributes its
-    /// best set's estimated 1RM (reps come from the plan's prescription).
-    static func series(logs: [LogKey: ExerciseLog]) -> [ExerciseSeries] {
+    /// The most recent weight logged for this entry's exercise on an
+    /// earlier day — what "same as last time" means for rows the plan
+    /// gives no percentage for.
+    static func lastWeight(dayId: Int, entryIndex: Int,
+                           logs: [LogKey: ExerciseLog]) -> Double? {
+        guard let day = TrainingPlan.days.first(where: { $0.id == dayId }),
+              entryIndex < day.entries.count else { return nil }
+        let name = canonicalExercise(resolvedExercise(day: day, entryIndex: entryIndex))
+        for earlier in TrainingPlan.days.reversed() where earlier.id < dayId {
+            for index in earlier.entries.indices.reversed()
+            where canonicalExercise(resolvedExercise(day: earlier, entryIndex: index)) == name {
+                if let weight = logs[LogKey(dayId: earlier.id, entryIndex: index)]?.weight {
+                    return weight
+                }
+            }
+        }
+        return nil
+    }
+
+    /// One series per exercise with a weight on a rep-based row, ordered by
+    /// first appearance in the plan. Each day contributes its best set's
+    /// estimated 1RM. A checked-off set logged without a weight counts at
+    /// the plan's prescribed weight — doing the plan is the default.
+    static func series(logs: [LogKey: ExerciseLog],
+                       maxes: TrainingMaxes = .standard) -> [ExerciseSeries] {
         var order: [String] = []
         var bestByDay: [String: [Int: Double]] = [:]
         for day in TrainingPlan.days {
             for index in day.entries.indices {
+                let entry = day.entries[index]
                 guard let log = logs[LogKey(dayId: day.id, entryIndex: index)],
-                      let weight = log.weight,
-                      let reps = day.entries[index].repsPerSet else { continue }
+                      let weight = log.weight ?? maxes.plannedWeight(for: entry.weight),
+                      let reps = entry.repsPerSet else { continue }
                 let value = estimatedOneRepMax(weight: weight, reps: reps)
                 let name = canonicalExercise(resolvedExercise(day: day, entryIndex: index))
                 if bestByDay[name] == nil {

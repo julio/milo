@@ -112,15 +112,60 @@ final class ProgressTests: XCTestCase {
         XCTAssertEqual(series[0].delta, 0)
     }
 
-    func testWeightlessAndTimeBasedLogsAreSkipped() {
+    func testWeightlessLogFallsBackToThePrescribedWeight() {
+        // Set 3 checked off with no weight typed: assume the plan's 85%
+        // of the 135 squat TM, rounded to 5s -> 115.
         let series = ProgressData.series(logs: logs([
-            // Checked sets but no weight: nothing to estimate.
-            ExerciseLog(dayId: squatDay1.id, entryIndex: 1, weight: nil, reps: 1),
+            ExerciseLog(dayId: squatDay1.id, entryIndex: 3, weight: nil, reps: 1),
+        ]))
+
+        XCTAssertEqual(series.map(\.exercise), ["Back squat"])
+        XCTAssertEqual(series[0].points[0].value,
+                       ProgressData.estimatedOneRepMax(weight: 115, reps: 5))
+    }
+
+    func testUnprescribedWeightlessAndTimeBasedLogsAreSkipped() {
+        let series = ProgressData.series(logs: logs([
+            // DB RDL has no prescribed weight; nothing to assume.
+            ExerciseLog(dayId: squatDay1.id, entryIndex: 5, weight: nil, reps: 3),
             // Plank is seconds, not reps — no 1RM even with a weight.
             ExerciseLog(dayId: squatDay1.id, entryIndex: 7, weight: 25, reps: 3),
         ]))
 
         XCTAssertEqual(series, [])
+    }
+
+    // MARK: - Last-used weight (prefill for unprescribed rows)
+
+    func testLastWeightFindsTheMostRecentEarlierDay() {
+        // RDL appears on every squat day at entry 5.
+        let squatDay3 = TrainingPlan.days[6]
+        let history = logs([
+            ExerciseLog(dayId: squatDay1.id, entryIndex: 5, weight: 40, reps: 3),
+            ExerciseLog(dayId: squatDay2.id, entryIndex: 5, weight: 45, reps: 3),
+        ])
+
+        XCTAssertEqual(ProgressData.lastWeight(
+            dayId: squatDay3.id, entryIndex: 5, logs: history), 45)
+        XCTAssertEqual(ProgressData.lastWeight(
+            dayId: squatDay2.id, entryIndex: 5, logs: history), 40)
+    }
+
+    func testLastWeightSkipsWeightlessLogsAndEmptyHistory() {
+        let history = logs([
+            ExerciseLog(dayId: squatDay1.id, entryIndex: 5, weight: nil, reps: 3),
+        ])
+
+        XCTAssertNil(ProgressData.lastWeight(
+            dayId: squatDay2.id, entryIndex: 5, logs: history))
+        XCTAssertNil(ProgressData.lastWeight(
+            dayId: squatDay1.id, entryIndex: 5, logs: [:]))
+    }
+
+    func testLastWeightHandlesInvalidTargets() {
+        XCTAssertNil(ProgressData.lastWeight(dayId: 999, entryIndex: 5, logs: [:]))
+        XCTAssertNil(ProgressData.lastWeight(
+            dayId: squatDay1.id, entryIndex: 99, logs: [:]))
     }
 
     func testSeriesOrderedByFirstAppearanceInPlan() {

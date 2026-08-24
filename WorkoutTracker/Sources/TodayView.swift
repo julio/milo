@@ -61,6 +61,10 @@ struct TodayView: View {
                                         }
                                     },
                                     log: logStore.log(dayId: day.id, entryIndex: index),
+                                    plannedWeight: maxes.plannedWeight(for: entry.weight)
+                                        ?? ProgressData.lastWeight(
+                                            dayId: day.id, entryIndex: index,
+                                            logs: logStore.logs),
                                     onLog: { weight, reps in
                                         Task {
                                             await logStore.save(
@@ -292,6 +296,8 @@ struct PlanEntryRow: View {
     let onToggle: () -> Void
     let onRename: (String) -> Void
     let log: ExerciseLog?
+    /// The plan's prescription, or the last weight used for this exercise.
+    let plannedWeight: Double?
     let onLog: (Double?, Int?) -> Void
 
     var body: some View {
@@ -325,7 +331,7 @@ struct PlanEntryRow: View {
                 if !entry.isSkipped, let checkCount = entry.checkCount {
                     LogFields(
                         log: log,
-                        plannedWeight: maxes.plannedWeight(for: entry.weight),
+                        plannedWeight: plannedWeight,
                         checkCount: checkCount,
                         onLog: onLog)
                 }
