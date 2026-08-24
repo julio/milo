@@ -333,6 +333,7 @@ struct PlanEntryRow: View {
                         log: log,
                         plannedWeight: plannedWeight,
                         checkCount: checkCount,
+                        takesWeight: entry.takesWeight,
                         onLog: onLog)
                 }
             }
@@ -357,6 +358,7 @@ struct LogFields: View {
     let log: ExerciseLog?
     let plannedWeight: Double?
     let checkCount: Int
+    let takesWeight: Bool
     let onLog: (Double?, Int?) -> Void
 
     @State private var weightText = ""
@@ -369,10 +371,12 @@ struct LogFields: View {
             Image(systemName: "chart.line.uptrend.xyaxis")
                 .font(.caption2)
                 .foregroundStyle(.tertiary)
-            TextField("lb", text: $weightText)
-                .keyboardType(.decimalPad)
-                .focused($focused)
-                .frame(width: 56)
+            if takesWeight {
+                TextField("lb", text: $weightText)
+                    .keyboardType(.decimalPad)
+                    .focused($focused)
+                    .frame(width: 56)
+            }
             // One set needs no box of its own — the row's done toggle is it.
             if checkCount > 1 {
                 RepChecks(

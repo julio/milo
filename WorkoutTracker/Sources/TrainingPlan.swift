@@ -35,6 +35,11 @@ struct PlanEntry: Equatable {
     /// cardio like the treadmill has nothing sensible to log.
     var isLoggable: Bool { checkCount != nil }
 
+    /// Timed holds ("3 x 45 sec" planks) are bodyweight — no weight to log.
+    var takesWeight: Bool {
+        !setsReps.split(separator: " ").map(String.init).contains("sec")
+    }
+
     /// Reps per set when the row is rep-based ("Set 1 — 5 reps" → 5,
     /// "3 x 10" → 10); time and distance rows have none. Feeds the
     /// estimated-1RM math, which needs the reps behind the weight.

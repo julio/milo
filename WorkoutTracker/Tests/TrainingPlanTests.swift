@@ -239,6 +239,14 @@ final class TrainingPlanTests: XCTestCase {
         XCTAssertTrue(entry("3 x 10").isLoggable)
     }
 
+    func testTimedHoldsTakeNoWeight() {
+        XCTAssertFalse(entry("3 x 45 sec").takesWeight)
+        XCTAssertFalse(entry("3 x 30 sec").takesWeight)
+        XCTAssertTrue(entry("3 x 40 m").takesWeight)
+        XCTAssertTrue(entry("Set 1 — 5 reps").takesWeight)
+        XCTAssertTrue(entry("3 x 10").takesWeight)
+    }
+
     func testRepsPerSetOnRepBasedRowsOnly() {
         XCTAssertEqual(entry("Set 1 — 5 reps").repsPerSet, 5)
         XCTAssertEqual(entry("3 x 10").repsPerSet, 10)

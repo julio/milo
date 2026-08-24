@@ -75,9 +75,13 @@ struct SeriesCard: View {
                 Text(title)
                     .font(.subheadline.weight(.semibold))
                 Spacer()
-                Text(deltaText)
-                    .font(.caption.weight(.bold))
-                    .foregroundStyle(deltaColor)
+                VStack(alignment: .trailing, spacing: 2) {
+                    Text("\(Int(series.latest.rounded())) lb")
+                        .font(.title3.bold())
+                    Text(deltaText)
+                        .font(.caption.weight(.bold))
+                        .foregroundStyle(deltaColor)
+                }
             }
 
             Chart {
