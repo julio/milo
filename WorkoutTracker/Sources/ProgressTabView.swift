@@ -26,7 +26,7 @@ struct ProgressTabView: View {
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 60)
                     } else {
-                        Text("Estimated one-rep max, best set per day")
+                        Text("Estimated one-rep max (lb), best set per day")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                         ForEach(series) { series in
@@ -102,7 +102,6 @@ struct SeriesCard: View {
                 .foregroundStyle(Color.accentColor)
             }
             .chartYScale(domain: .automatic(includesZero: false))
-            .chartYAxisLabel("est. 1RM (lb)")
             .frame(height: 150)
         }
         .padding(12)
