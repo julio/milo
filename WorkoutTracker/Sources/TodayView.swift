@@ -387,15 +387,24 @@ struct LogFields: View {
         .font(.caption)
         .textFieldStyle(.roundedBorder)
         .onAppear(perform: load)
-        .onChange(of: log) { _, _ in load() }
+        // What the field shows is what gets stored: every user edit commits
+        // immediately, and refreshes can't clobber the field mid-edit.
+        .onChange(of: weightText) { _, _ in
+            if focused { commit() }
+        }
+        .onChange(of: log) { _, _ in
+            if !focused { load() }
+        }
         .onChange(of: focused) { _, nowFocused in
-            if !nowFocused {
-                onLog(LogStore.parseWeight(weightText),
-                      checksDone == 0 ? nil : checksDone)
-            }
+            if !nowFocused { commit() }
         }
         // Swallow taps around the field so they don't toggle the row done.
         .onTapGesture {}
+    }
+
+    private func commit() {
+        onLog(LogStore.parseWeight(weightText),
+              checksDone == 0 ? nil : checksDone)
     }
 
     private func load() {
