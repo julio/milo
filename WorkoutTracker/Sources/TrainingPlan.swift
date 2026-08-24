@@ -34,6 +34,21 @@ struct PlanEntry: Equatable {
     /// Rows with something countable take a weight/checkbox log; time-only
     /// cardio like the treadmill has nothing sensible to log.
     var isLoggable: Bool { checkCount != nil }
+
+    /// Reps per set when the row is rep-based ("Set 1 — 5 reps" → 5,
+    /// "3 x 10" → 10); time and distance rows have none. Feeds the
+    /// estimated-1RM math, which needs the reps behind the weight.
+    var repsPerSet: Int? {
+        let tokens = setsReps.split(separator: " ").map(String.init)
+        if let index = tokens.firstIndex(of: "reps"), index > 0 {
+            return Int(tokens[index - 1])
+        }
+        if let index = tokens.firstIndex(of: "x"), index > 0,
+           index + 1 == tokens.count - 1 {
+            return Int(tokens[index + 1])
+        }
+        return nil
+    }
 }
 
 struct PlanDay: Identifiable, Equatable {

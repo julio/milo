@@ -239,6 +239,18 @@ final class TrainingPlanTests: XCTestCase {
         XCTAssertTrue(entry("3 x 10").isLoggable)
     }
 
+    func testRepsPerSetOnRepBasedRowsOnly() {
+        XCTAssertEqual(entry("Set 1 — 5 reps").repsPerSet, 5)
+        XCTAssertEqual(entry("3 x 10").repsPerSet, 10)
+        XCTAssertEqual(entry("5 x 5").repsPerSet, 5)
+        XCTAssertNil(entry("3 x 45 sec").repsPerSet)
+        XCTAssertNil(entry("3 x 40 m").repsPerSet)
+        XCTAssertNil(entry("5 min").repsPerSet)
+        XCTAssertNil(entry("x 5").repsPerSet)
+        XCTAssertNil(entry("3 x nope").repsPerSet)
+        XCTAssertNil(entry("—").repsPerSet)
+    }
+
     func testPlannedWeight() {
         let maxes = TrainingMaxes.standard
         XCTAssertNil(maxes.plannedWeight(for: .none))

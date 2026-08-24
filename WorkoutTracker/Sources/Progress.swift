@@ -1,22 +1,6 @@
 import Foundation
 
-/// Which measure the Progress tab charts. One axis per chart, so weight and
-/// reps are two views of the data, never two scales on one plot.
-enum ProgressMetric: String, CaseIterable, Identifiable {
-    case weight = "Weight"
-    case reps = "Reps"
-
-    var id: String { rawValue }
-
-    var unit: String {
-        switch self {
-        case .weight: return "lb"
-        case .reps: return "reps"
-        }
-    }
-}
-
-/// One charted day for an exercise: the best logged value that day.
+/// One charted day for an exercise: the best set's estimated 1RM that day.
 struct ProgressPoint: Identifiable, Equatable {
     let date: Date
     let week: Int
@@ -25,7 +9,7 @@ struct ProgressPoint: Identifiable, Equatable {
     var id: Date { date }
 }
 
-/// An exercise's history plus its week-1 reference line.
+/// An exercise's estimated-1RM history plus its week-1 reference line.
 struct ExerciseSeries: Identifiable, Equatable {
     /// The plan's original name; display names come from renames.
     let exercise: String
@@ -57,22 +41,25 @@ enum ProgressData {
         return String(name.dropLast(suffix.count))
     }
 
-    static func value(of log: ExerciseLog, for metric: ProgressMetric) -> Double? {
-        switch metric {
-        case .weight: return log.weight
-        case .reps: return log.reps.map(Double.init)
-        }
+    /// Epley: what the set works out to as a single all-out rep. This is
+    /// the number the charts plot — it folds weight and reps into one
+    /// comparable strength measure.
+    static func estimatedOneRepMax(weight: Double, reps: Int) -> Double {
+        weight * (1 + Double(reps) / 30)
     }
 
-    /// One series per exercise with any data for the metric, ordered by first
-    /// appearance in the plan. Each day contributes its best set.
-    static func series(metric: ProgressMetric, logs: [LogKey: ExerciseLog]) -> [ExerciseSeries] {
+    /// One series per exercise with any logged weight on a rep-based row,
+    /// ordered by first appearance in the plan. Each day contributes its
+    /// best set's estimated 1RM (reps come from the plan's prescription).
+    static func series(logs: [LogKey: ExerciseLog]) -> [ExerciseSeries] {
         var order: [String] = []
         var bestByDay: [String: [Int: Double]] = [:]
         for day in TrainingPlan.days {
             for index in day.entries.indices {
                 guard let log = logs[LogKey(dayId: day.id, entryIndex: index)],
-                      let value = value(of: log, for: metric) else { continue }
+                      let weight = log.weight,
+                      let reps = day.entries[index].repsPerSet else { continue }
+                let value = estimatedOneRepMax(weight: weight, reps: reps)
                 let name = canonicalExercise(resolvedExercise(day: day, entryIndex: index))
                 if bestByDay[name] == nil {
                     order.append(name)

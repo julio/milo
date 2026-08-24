@@ -1,43 +1,37 @@
 import SwiftUI
 import Charts
 
-/// One line chart per exercise, charting the best logged set per day against
-/// a dashed week-1 baseline. A segmented control switches between weight and
-/// reps — one axis per chart, never two scales.
+/// One line chart per exercise: the best set's estimated 1RM per day,
+/// against a dashed week-1 baseline.
 struct ProgressTabView: View {
     @EnvironmentObject var logStore: LogStore
     @EnvironmentObject var renameStore: RenameStore
     @EnvironmentObject var syncEngine: SyncEngine
-    @State private var metric: ProgressMetric = .weight
 
     private var series: [ExerciseSeries] {
-        ProgressData.series(metric: metric, logs: logStore.logs)
+        ProgressData.series(logs: logStore.logs)
     }
 
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
-                    Picker("Metric", selection: $metric) {
-                        ForEach(ProgressMetric.allCases) { metric in
-                            Text(metric.rawValue).tag(metric)
-                        }
-                    }
-                    .pickerStyle(.segmented)
-
                     SyncStatusBar()
 
                     if series.isEmpty {
-                        Text("No \(metric.rawValue.lowercased()) logged yet.\nEnter what you lift on the Today tab.")
+                        Text("Nothing logged yet.\nEnter what you lift on the Today tab.")
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
                             .multilineTextAlignment(.center)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 60)
                     } else {
+                        Text("Estimated one-rep max, best set per day")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
                         ForEach(series) { series in
                             SeriesCard(
-                                series: series, metric: metric,
+                                series: series,
                                 title: renameStore.displayName(for: series.exercise))
                         }
                     }
@@ -62,12 +56,11 @@ struct ProgressTabView: View {
 
 struct SeriesCard: View {
     let series: ExerciseSeries
-    let metric: ProgressMetric
     let title: String
 
     private var deltaText: String {
         let sign = series.delta >= 0 ? "+" : "−"
-        return "\(sign)\(LogStore.weightText(abs(series.delta))) \(metric.unit) vs wk 1"
+        return "\(sign)\(Int(abs(series.delta).rounded())) lb vs wk 1"
     }
 
     private var deltaColor: Color {
@@ -99,17 +92,17 @@ struct SeriesCard: View {
                 ForEach(series.points) { point in
                     LineMark(
                         x: .value("Date", point.date, unit: .day),
-                        y: .value(metric.rawValue, point.value))
+                        y: .value("Est. 1RM", point.value))
                         .lineStyle(StrokeStyle(lineWidth: 2))
                     PointMark(
                         x: .value("Date", point.date, unit: .day),
-                        y: .value(metric.rawValue, point.value))
+                        y: .value("Est. 1RM", point.value))
                         .symbolSize(40)
                 }
                 .foregroundStyle(Color.accentColor)
             }
             .chartYScale(domain: .automatic(includesZero: false))
-            .chartYAxisLabel(metric.unit)
+            .chartYAxisLabel("est. 1RM (lb)")
             .frame(height: 150)
         }
         .padding(12)
