@@ -81,14 +81,11 @@ struct SeriesCard: View {
             }
 
             Chart {
+                // The dashed week-1 baseline; the delta badge above the
+                // chart names it, so it carries no label of its own.
                 RuleMark(y: .value("Week 1", series.baseline))
                     .lineStyle(StrokeStyle(lineWidth: 1, dash: [4, 4]))
                     .foregroundStyle(.secondary.opacity(0.5))
-                    .annotation(position: .bottomLeading, spacing: 2) {
-                        Text("wk 1")
-                            .font(.caption2)
-                            .foregroundStyle(.secondary)
-                    }
                 ForEach(series.points) { point in
                     LineMark(
                         x: .value("Date", point.date, unit: .day),
