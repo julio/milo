@@ -302,12 +302,11 @@ struct PlanEntryRow: View {
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
-                if !entry.isSkipped && entry.isLoggable {
+                if !entry.isSkipped, let checkCount = entry.checkCount {
                     LogFields(
                         log: log,
                         plannedWeight: maxes.plannedWeight(for: entry.weight),
-                        plannedReps: entry.plannedReps,
-                        repCountable: entry.isRepCountable,
+                        checkCount: checkCount,
                         onLog: onLog)
                 }
             }
@@ -326,83 +325,61 @@ struct PlanEntryRow: View {
 }
 
 /// Inline capture of what was actually lifted. The weight field starts
-/// prefilled with the plan's prescription and commits when focus leaves it.
-/// Rep-counting rows show one checkbox per prescribed rep; time/distance
-/// rows keep a quantity field instead.
+/// prefilled with the plan's prescription and commits when focus leaves it;
+/// checkboxes count off the row's reps or sets as they finish.
 struct LogFields: View {
     let log: ExerciseLog?
     let plannedWeight: Double?
-    let plannedReps: Int?
-    let repCountable: Bool
+    let checkCount: Int
     let onLog: (Double?, Int?) -> Void
 
     @State private var weightText = ""
-    @State private var repsText = ""
-    @FocusState private var focusedField: Field?
+    @FocusState private var focused: Bool
 
-    enum Field { case weight, reps }
-
-    private var repsDone: Int { log?.reps ?? 0 }
+    private var checksDone: Int { log?.reps ?? 0 }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            HStack(spacing: 6) {
-                Image(systemName: "chart.line.uptrend.xyaxis")
-                    .font(.caption2)
-                    .foregroundStyle(.tertiary)
-                TextField("lb", text: $weightText)
-                    .keyboardType(.decimalPad)
-                    .focused($focusedField, equals: .weight)
-                    .frame(width: 56)
-                if !repCountable {
-                    TextField("reps", text: $repsText)
-                        .keyboardType(.numberPad)
-                        .focused($focusedField, equals: .reps)
-                        .frame(width: 48)
-                }
-                Spacer()
-            }
-            if repCountable, let plannedReps {
-                RepChecks(
-                    total: plannedReps,
-                    done: min(repsDone, plannedReps),
-                    onChange: { count in
-                        onLog(LogStore.parseWeight(weightText),
-                              count == 0 ? nil : count)
-                    })
-            }
+        HStack(spacing: 8) {
+            Image(systemName: "chart.line.uptrend.xyaxis")
+                .font(.caption2)
+                .foregroundStyle(.tertiary)
+            TextField("lb", text: $weightText)
+                .keyboardType(.decimalPad)
+                .focused($focused)
+                .frame(width: 56)
+            RepChecks(
+                total: checkCount,
+                done: min(checksDone, checkCount),
+                onChange: { count in
+                    onLog(LogStore.parseWeight(weightText),
+                          count == 0 ? nil : count)
+                })
         }
         .font(.caption)
         .textFieldStyle(.roundedBorder)
         .onAppear(perform: load)
         .onChange(of: log) { _, _ in load() }
-        .onChange(of: focusedField) { _, nowFocused in
-            if nowFocused == nil { commit() }
+        .onChange(of: focused) { _, nowFocused in
+            if !nowFocused {
+                onLog(LogStore.parseWeight(weightText),
+                      checksDone == 0 ? nil : checksDone)
+            }
         }
-        // Swallow taps between the fields so they don't toggle the row done.
+        // Swallow taps around the field so they don't toggle the row done.
         .onTapGesture {}
     }
 
     private func load() {
         if let log {
             weightText = LogStore.weightText(log.weight)
-            repsText = LogStore.repsText(log.reps)
         } else {
             weightText = LogStore.weightText(plannedWeight)
-            repsText = repCountable ? "" : LogStore.repsText(plannedReps)
         }
-    }
-
-    private func commit() {
-        let reps = repCountable
-            ? (repsDone == 0 ? nil : repsDone)
-            : LogStore.parseReps(repsText)
-        onLog(LogStore.parseWeight(weightText), reps)
     }
 }
 
-/// One checkbox per prescribed rep, filled left to right. Tapping a box
-/// counts up to it; tapping the last checked box takes that rep back.
+/// One checkbox per prescribed rep or set, filled left to right. Tapping a
+/// box counts up to it; tapping the last checked box takes one back.
 struct RepChecks: View {
     let total: Int
     let done: Int

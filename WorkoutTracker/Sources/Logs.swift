@@ -86,18 +86,10 @@ class LogStore: ObservableObject {
         Double(text.trimmingCharacters(in: .whitespaces))
     }
 
-    static func parseReps(_ text: String) -> Int? {
-        Int(text.trimmingCharacters(in: .whitespaces))
-    }
-
     /// "135", not "135.0", for whole numbers.
     static func weightText(_ weight: Double?) -> String {
         guard let weight else { return "" }
         return weight == weight.rounded() ? String(Int(weight)) : String(weight)
-    }
-
-    static func repsText(_ reps: Int?) -> String {
-        reps.map(String.init) ?? ""
     }
 
     private func run(_ operation: () async throws -> Void) async {

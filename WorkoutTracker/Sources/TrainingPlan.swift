@@ -16,34 +16,24 @@ struct PlanEntry: Equatable {
     let note: String
     let isSkipped: Bool
 
-    /// The per-set count the plan's rep column encodes: "Set 1 — 5 reps" → 5,
-    /// "3 x 10" → 10, "3 x 45 sec" → 45. Time-only rows ("5 min") have none.
-    var plannedReps: Int? {
+    /// How many boxes the row checks off — one per unit you finish and rest
+    /// after. A single-set row counts its reps ("Set 1 — 5 reps" → 5); an
+    /// "N x M" row counts its sets ("3 x 10" → 3, "3 x 45 sec" → 3).
+    /// Time-only rows ("5 min" treadmill) have none.
+    var checkCount: Int? {
         let tokens = setsReps.split(separator: " ").map(String.init)
         if let index = tokens.firstIndex(of: "reps"), index > 0 {
             return Int(tokens[index - 1])
         }
-        if let index = tokens.firstIndex(of: "x"), index + 1 < tokens.count {
-            return Int(tokens[index + 1])
+        if let index = tokens.firstIndex(of: "x"), index > 0 {
+            return Int(tokens[index - 1])
         }
         return nil
     }
 
-    /// Rows with a countable rep column take a weight/reps log; time-only
+    /// Rows with something countable take a weight/checkbox log; time-only
     /// cardio like the treadmill has nothing sensible to log.
-    var isLoggable: Bool { plannedReps != nil }
-
-    /// True when the rep column counts actual reps ("Set 1 — 5 reps",
-    /// "3 x 10") rather than time or distance ("3 x 45 sec", "3 x 40 m").
-    /// Rep-counting rows check reps off one by one instead of typing them.
-    var isRepCountable: Bool {
-        let tokens = setsReps.split(separator: " ").map(String.init)
-        if tokens.contains("reps") { return true }
-        if let index = tokens.firstIndex(of: "x"), index + 1 < tokens.count {
-            return index + 1 == tokens.count - 1 && Int(tokens[index + 1]) != nil
-        }
-        return false
-    }
+    var isLoggable: Bool { checkCount != nil }
 }
 
 struct PlanDay: Identifiable, Equatable {

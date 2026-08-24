@@ -214,16 +214,21 @@ final class TrainingPlanTests: XCTestCase {
                   note: "", isSkipped: false)
     }
 
-    func testPlannedRepsFromRepColumn() {
-        XCTAssertEqual(entry("Set 1 — 5 reps").plannedReps, 5)
-        XCTAssertEqual(entry("3 x 10").plannedReps, 10)
-        XCTAssertEqual(entry("5 x 5").plannedReps, 5)
-        XCTAssertEqual(entry("3 x 45 sec").plannedReps, 45)
-        XCTAssertEqual(entry("3 x 40 m").plannedReps, 40)
-        XCTAssertNil(entry("5 min").plannedReps)
-        XCTAssertNil(entry("15–20 min").plannedReps)
-        XCTAssertNil(entry("reps galore").plannedReps)
-        XCTAssertNil(entry("x").plannedReps)
+    func testCheckCountIsRepsForSingleSetRowsAndSetsForNxM() {
+        // One row per set: a box per rep.
+        XCTAssertEqual(entry("Set 1 — 5 reps").checkCount, 5)
+        // One row for all sets: a box per set.
+        XCTAssertEqual(entry("3 x 10").checkCount, 3)
+        XCTAssertEqual(entry("5 x 10").checkCount, 5)
+        XCTAssertEqual(entry("5 x 5").checkCount, 5)
+        XCTAssertEqual(entry("3 x 45 sec").checkCount, 3)
+        XCTAssertEqual(entry("3 x 40 m").checkCount, 3)
+        XCTAssertNil(entry("5 min").checkCount)
+        XCTAssertNil(entry("15–20 min").checkCount)
+        XCTAssertNil(entry("—").checkCount)
+        XCTAssertNil(entry("reps first").checkCount)
+        XCTAssertNil(entry("x 5").checkCount)
+        XCTAssertNil(entry("nope x 5").checkCount)
     }
 
     func testTimeOnlyRowsAreNotLoggable() {
@@ -231,17 +236,6 @@ final class TrainingPlanTests: XCTestCase {
         XCTAssertFalse(entry("15–20 min").isLoggable)
         XCTAssertTrue(entry("Set 1 — 5 reps").isLoggable)
         XCTAssertTrue(entry("3 x 10").isLoggable)
-    }
-
-    func testRepCountableSeparatesRepsFromTimeAndDistance() {
-        XCTAssertTrue(entry("Set 1 — 5 reps").isRepCountable)
-        XCTAssertTrue(entry("3 x 10").isRepCountable)
-        XCTAssertTrue(entry("5 x 5").isRepCountable)
-        XCTAssertFalse(entry("3 x 45 sec").isRepCountable)
-        XCTAssertFalse(entry("3 x 40 m").isRepCountable)
-        XCTAssertFalse(entry("5 min").isRepCountable)
-        XCTAssertFalse(entry("3 x nope").isRepCountable)
-        XCTAssertFalse(entry("—").isRepCountable)
     }
 
     func testPlannedWeight() {

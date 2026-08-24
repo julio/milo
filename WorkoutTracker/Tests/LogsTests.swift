@@ -138,23 +138,12 @@ final class LogStoreTests: XCTestCase {
         XCTAssertNil(LogStore.parseWeight("heavy"))
     }
 
-    func testParseReps() {
-        XCTAssertEqual(LogStore.parseReps("5"), 5)
-        XCTAssertEqual(LogStore.parseReps(" 12 "), 12)
-        XCTAssertNil(LogStore.parseReps(""))
-        XCTAssertNil(LogStore.parseReps("5.5"))
-    }
-
     func testWeightText() {
         XCTAssertEqual(LogStore.weightText(nil), "")
         XCTAssertEqual(LogStore.weightText(135), "135")
         XCTAssertEqual(LogStore.weightText(132.5), "132.5")
     }
 
-    func testRepsText() {
-        XCTAssertEqual(LogStore.repsText(nil), "")
-        XCTAssertEqual(LogStore.repsText(8), "8")
-    }
 }
 
 // MARK: - Codable shape
