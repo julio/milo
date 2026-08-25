@@ -36,17 +36,24 @@ enum StretchPlan {
         return dateKey(year: c.year!, month: c.month!, day: c.day!)
     }
 
+    /// Dropped from the routine entirely. Kept in the list (not deleted)
+    /// so historical completion indices stay stable.
+    static let retired = ["90/90 Hip Lift L Hip Pullback R Foot Lift Off"]
+
     /// Skipped on strength-training days — the session already covers them.
     static let trainingDaySkips = ["Plank on Gym Ball", "Doorway Squats"]
 
-    /// The stretches to do on a date: the full list on rest days, trimmed
-    /// on training days. Original indices, so completion keys stay stable.
+    /// The stretches to do on a date: the routine minus retired ones, and
+    /// minus the training-day skips on workout days. Original indices, so
+    /// completion keys stay stable.
     static func activeIndices(year: Int, month: Int, day: Int) -> [Int] {
         let isTrainingDay = year == PlanDay.planYear && TrainingPlan.days.contains {
             $0.month == month && $0.day == day
         }
-        guard isTrainingDay else { return Array(stretches.indices) }
-        return stretches.indices.filter { !trainingDaySkips.contains(stretches[$0]) }
+        return stretches.indices.filter {
+            !retired.contains(stretches[$0])
+                && !(isTrainingDay && trainingDaySkips.contains(stretches[$0]))
+        }
     }
 
     static func activeIndices(on date: Date, calendar: Calendar = .current) -> [Int] {
